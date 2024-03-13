@@ -26,6 +26,4 @@ public class Doador {
     private String Genero;
     private Integer Peso;
     private String TipoSanguineo;
-    private Endereco Endereco;
-
 }
