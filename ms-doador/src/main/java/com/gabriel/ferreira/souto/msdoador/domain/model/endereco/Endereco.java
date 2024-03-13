@@ -15,4 +15,5 @@ public class Endereco {
     private String Cidade;
     private String Estado;
     private String Cep;
+    private String DoadorId;
 }
