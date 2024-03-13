@@ -7,13 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Endereco {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
     private String Bairro;
     private String Cidade;
     private String Estado;
     private String Cep;
-    private String DoadorId;
+    private Integer DoadorId;
 }
