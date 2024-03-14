@@ -7,6 +7,6 @@ import com.gabriel.ferreira.souto.msdoador.domain.model.doador.request.DoadorReq
 public interface IDoadorService {
     DoadorDTO criarDoador(DoadorRequestDTO doadorRequestDTO);
     DoadorDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId);
-    DoadorDTO buscarDoadorComId(Integer doadorId);
+    DoadorRequestDTO buscarDoadorComId(Integer doadorId);
     void deletarDoadorComId(Integer doadorId);
 }
