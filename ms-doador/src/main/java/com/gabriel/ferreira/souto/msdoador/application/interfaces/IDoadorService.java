@@ -5,4 +5,5 @@ import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorDTO;
 public interface IDoadorService {
     DoadorDTO criarDoador(DoadorDTO doadorDTO);
     DoadorDTO atualizarDoador(DoadorDTO doadorDTO, Integer doadorId);
+    DoadorDTO buscarDoadorComId(Integer doadorId);
 }
