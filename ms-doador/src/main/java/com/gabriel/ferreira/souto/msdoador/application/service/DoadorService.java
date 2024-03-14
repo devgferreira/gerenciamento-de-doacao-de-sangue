@@ -31,8 +31,10 @@ public class DoadorService implements IDoadorService {
     @Override
     public DoadorDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
-        _enderecoService.criarEndereco(doadorRequestDTO.getEnderecoDTO());
-        return _modelMapper.map(_doadorRepository.save(doador), DoadorDTO.class);
+        _doadorRepository.save(doador);
+        Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow();
+        _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
+        return _modelMapper.map(doador, DoadorDTO.class);
     }
 
     @Override
@@ -46,10 +48,10 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getPeso()).ifPresent(doador::setPeso);
         Optional.ofNullable(doadorRequestDTO.getGenero()).filter(genero -> !genero.isEmpty()).ifPresent(doador::setGenero);
         Optional.ofNullable(doadorRequestDTO.getTipoSanguineo()).filter(tipoSanguineo -> !tipoSanguineo.isEmpty()).ifPresent(doador::setTipoSanguineo);
-        Optional.ofNullable(doadorRequestDTO.getEnderecoDTO().getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(enderecoDTO::setBairro);
-        Optional.ofNullable(doadorRequestDTO.getEnderecoDTO().getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(enderecoDTO::setCidade);
-        Optional.ofNullable(doadorRequestDTO.getEnderecoDTO().getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(enderecoDTO::setEstado);
-        Optional.ofNullable(doadorRequestDTO.getEnderecoDTO().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
+        Optional.ofNullable(doadorRequestDTO.getEndereco().getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(enderecoDTO::setBairro);
+        Optional.ofNullable(doadorRequestDTO.getEndereco().getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(enderecoDTO::setCidade);
+        Optional.ofNullable(doadorRequestDTO.getEndereco().getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(enderecoDTO::setEstado);
+        Optional.ofNullable(doadorRequestDTO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
 
         _doadorRepository.save(doador);
         _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
@@ -62,7 +64,7 @@ public class DoadorService implements IDoadorService {
         Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
-        doadorResponseDTO.setEnderecoDTO(enderecoDTO);
+        doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
     }
 

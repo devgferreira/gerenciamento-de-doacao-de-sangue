@@ -19,5 +19,6 @@ public class Endereco {
     private String cidade;
     private String estado;
     private String cep;
+    @JoinColumn(name = "doador_id")
     private Integer doadorId;
 }

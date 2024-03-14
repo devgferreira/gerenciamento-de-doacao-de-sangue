@@ -21,8 +21,9 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    public EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO) {
+    public EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO, Integer doadorId) {
         Endereco endereco = _modelMapper.map(enderecoDTO, Endereco.class);
+        endereco.setDoadorId(doadorId);
         return _modelMapper.map(_enderecoRepository.save(endereco), EnderecoDTO.class);
     }
 

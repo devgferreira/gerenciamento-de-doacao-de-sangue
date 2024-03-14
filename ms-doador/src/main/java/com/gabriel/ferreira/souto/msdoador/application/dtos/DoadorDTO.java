@@ -10,7 +10,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DoadorDTO {
-    private Integer id;
     private String nome;
     private String email;
     private Date aniversario;
