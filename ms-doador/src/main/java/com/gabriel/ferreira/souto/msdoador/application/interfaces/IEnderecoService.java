@@ -5,5 +5,6 @@ import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 
 public interface IEnderecoService {
     EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO);
-    EnderecoDTO buscarEnderecoComDoadorId(EnderecoDTO enderecoDTO, Integer doadorId);
+    EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId);
+    EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId);
 }
