@@ -2,6 +2,7 @@ package com.gabriel.ferreira.souto.msdoador.application.service;
 
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorRequestDTO;
+import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorResponseDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IDoadorService;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IEnderecoService;
@@ -57,12 +58,12 @@ public class DoadorService implements IDoadorService {
     }
 
     @Override
-    public DoadorRequestDTO buscarDoadorComId(Integer doadorId) {
+    public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
         Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
-        DoadorRequestDTO doadorRequestDTO = _modelMapper.map(doador, DoadorRequestDTO.class);
-        doadorRequestDTO.setEnderecoDTO(enderecoDTO);
-        return doadorRequestDTO;
+        DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
+        doadorResponseDTO.setEnderecoDTO(enderecoDTO);
+        return doadorResponseDTO;
     }
 
     @Override
