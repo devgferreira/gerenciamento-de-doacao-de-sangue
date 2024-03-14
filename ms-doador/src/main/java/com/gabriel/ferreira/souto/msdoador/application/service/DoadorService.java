@@ -7,9 +7,8 @@ import com.gabriel.ferreira.souto.msdoador.application.interfaces.IDoadorService
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IEnderecoService;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
-import com.gabriel.ferreira.souto.msdoador.domain.model.doador.request.DoadorRequest;
-import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +20,7 @@ public class DoadorService implements IDoadorService {
     private final IEnderecoService _enderecoService;
     private final IDoadorRepository _doadorRepository;
 
+    @Autowired
     public DoadorService(ModelMapper modelMapper, IEnderecoService enderecoService, IDoadorRepository doadorRepository) {
         _modelMapper = modelMapper;
         _enderecoService = enderecoService;
@@ -57,8 +57,12 @@ public class DoadorService implements IDoadorService {
     }
 
     @Override
-    public DoadorDTO buscarDoadorComId(Integer doadorId) {
-        return null;
+    public DoadorRequestDTO buscarDoadorComId(Integer doadorId) {
+        Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
+        DoadorRequestDTO doadorRequestDTO = _modelMapper.map(doador, DoadorRequestDTO.class);
+        doadorRequestDTO.setEnderecoDTO(enderecoDTO);
+        return doadorRequestDTO;
     }
 
     @Override

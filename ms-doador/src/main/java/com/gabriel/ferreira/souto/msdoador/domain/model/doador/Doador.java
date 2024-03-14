@@ -19,11 +19,11 @@ import java.util.Date;
 public class Doador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
-    private String Nome;
-    private String Email;
-    private Date Aniversario;
-    private String Genero;
-    private Integer Peso;
-    private String TipoSanguineo;
+    private Integer id;
+    private String nome;
+    private String email;
+    private Date aniversario;
+    private String genero;
+    private Integer peso;
+    private String tipoSanguineo;
 }

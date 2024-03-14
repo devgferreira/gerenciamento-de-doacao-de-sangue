@@ -10,11 +10,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DoadorDTO {
-    private Integer Id;
-    private String Nome;
-    private String Email;
-    private Date Aniversario;
-    private String Genero;
-    private Integer Peso;
-    private String TipoSanguineo;
+    private Integer id;
+    private String nome;
+    private String email;
+    private Date aniversario;
+    private String genero;
+    private Integer peso;
+    private String tipoSanguineo;
 }
