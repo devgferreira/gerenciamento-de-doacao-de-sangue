@@ -26,24 +26,13 @@ public class EnderecoService implements IEnderecoService {
     }
 
     @Override
-    public EnderecoDTO buscarEnderecoComDoadorId(EnderecoDTO enderecoDTO, Integer doadorId) {
+    public EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId) {
         Endereco endereco = _enderecoRepository.findEnderecoByDoadorId(doadorId).orElseThrow();
-
-        if(enderecoDTO.getBairro().isEmpty()){
-            endereco.setBairro(enderecoDTO.getBairro());
-        }
-        if(enderecoDTO.getCidade().isEmpty()){
-            endereco.setCidade(enderecoDTO.getCidade());
-        }
-        if(enderecoDTO.getEstado().isEmpty()){
-            endereco.setEstado(enderecoDTO.getEstado());
-        }
-        if(enderecoDTO.getCep().isEmpty()){
-            endereco.setCep(enderecoDTO.getCep());
-        }
-
-        _enderecoRepository.save(endereco);
-
         return _modelMapper.map(endereco, EnderecoDTO.class);
+    }
+
+    @Override
+    public EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId) {
+        return null;
     }
 }
