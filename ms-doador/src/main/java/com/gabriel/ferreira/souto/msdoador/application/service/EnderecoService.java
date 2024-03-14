@@ -3,6 +3,7 @@ package com.gabriel.ferreira.souto.msdoador.application.service;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IEnderecoService;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IEnderecoRepository;
+import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class EnderecoService implements IEnderecoService {
 
     @Override
     public EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO) {
-        return null;
+        Endereco endereco = _modelMapper.map(enderecoDTO, Endereco.class);
+        return _modelMapper.map(_enderecoRepository.save(endereco), EnderecoDTO.class);
     }
 }
