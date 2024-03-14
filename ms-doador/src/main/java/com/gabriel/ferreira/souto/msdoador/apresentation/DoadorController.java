@@ -24,7 +24,7 @@ public class DoadorController {
         _doadorService = doadorService;
     }
 
-    @PostMapping
+    @PostMapping(name = "Criar Doador")
     public ResponseEntity<DoadorResponseDTO> criarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO){
         DoadorDTO doadorDTO = _doadorService.criarDoador(doadorRequestDTO);
         DoadorResponseDTO doadorResponseDTO = new DoadorResponseDTO(doadorDTO);
