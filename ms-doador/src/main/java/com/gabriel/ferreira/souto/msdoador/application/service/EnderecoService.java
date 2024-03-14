@@ -7,6 +7,8 @@ import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class EnderecoService implements IEnderecoService {
     private final ModelMapper _modelMapper;
@@ -21,5 +23,11 @@ public class EnderecoService implements IEnderecoService {
     public EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO) {
         Endereco endereco = _modelMapper.map(enderecoDTO, Endereco.class);
         return _modelMapper.map(_enderecoRepository.save(endereco), EnderecoDTO.class);
+    }
+
+    @Override
+    public EnderecoDTO buscarEndercoComDoadorId(Integer doadorId) {
+        Optional<Endereco> endereco = _enderecoRepository.findEnderecoByDoadorId(doadorId);
+        return _modelMapper.map(endereco, EnderecoDTO.class);
     }
 }
