@@ -4,4 +4,5 @@ import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 
 public interface IEnderecoService {
     EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO);
+    EnderecoDTO buscarEndercoComDoadorId(Integer doadorId);
 }
