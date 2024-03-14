@@ -6,4 +6,5 @@ public interface IDoadorService {
     DoadorDTO criarDoador(DoadorDTO doadorDTO);
     DoadorDTO atualizarDoador(DoadorDTO doadorDTO, Integer doadorId);
     DoadorDTO buscarDoadorComId(Integer doadorId);
+    void deletarDoadorComId(Integer doadorId);
 }
