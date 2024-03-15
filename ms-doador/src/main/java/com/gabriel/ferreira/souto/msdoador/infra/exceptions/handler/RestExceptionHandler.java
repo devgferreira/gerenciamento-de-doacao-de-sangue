@@ -1,10 +1,7 @@
 package com.gabriel.ferreira.souto.msdoador.infra.exceptions.handler;
 
 import com.gabriel.ferreira.souto.msdoador.domain.enums.ErrorCodes;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EnderecoNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.ExceptionResponse;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +23,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(EmailJaExisteException.class)
     public final ResponseEntity<Object> handlerEmailJaExisteException(EmailJaExisteException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
+    @ExceptionHandler(EmailNaoEncontradoException.class)
+    public final ResponseEntity<Object> handlerEmailNaoEncontradoException(EmailNaoEncontradoException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
