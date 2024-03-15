@@ -9,10 +9,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/doadores")
@@ -30,5 +27,10 @@ public class DoadorController {
         DoadorResponseDTO doadorResponseDTO = new DoadorResponseDTO(doadorDTO);
         doadorResponseDTO.setEndereco(doadorRequestDTO.getEndereco());
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.CREATED);
+    }
+    @GetMapping(name = "Buscar Doador", value = "/{doadorId}")
+    public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId){
+        DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorComId(doadorId);
+        return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
 }
