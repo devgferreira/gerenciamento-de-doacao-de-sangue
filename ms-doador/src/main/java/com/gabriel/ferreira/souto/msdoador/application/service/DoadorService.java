@@ -29,16 +29,16 @@ public class DoadorService implements IDoadorService {
     }
 
     @Override
-    public DoadorDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
+        public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         _doadorRepository.save(doador);
         Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow();
         _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
-        return _modelMapper.map(doador, DoadorDTO.class);
+        return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
 
     @Override
-    public DoadorDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
+    public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
         Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
 
@@ -56,7 +56,7 @@ public class DoadorService implements IDoadorService {
         _doadorRepository.save(doador);
         _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
 
-        return _modelMapper.map(doador, DoadorDTO.class);
+        return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
 
     @Override
