@@ -37,10 +37,10 @@ public class EnderecoService implements IEnderecoService {
     public EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId) {
         Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow();
 
-        Optional.ofNullable(enderecoDTO.getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(enderecoDTO::setBairro);
-        Optional.ofNullable(enderecoDTO.getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(enderecoDTO::setCidade);
-        Optional.ofNullable(enderecoDTO.getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(enderecoDTO::setEstado);
-        Optional.ofNullable(enderecoDTO.getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
+        Optional.ofNullable(enderecoDTO.getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(endereco::setBairro);
+        Optional.ofNullable(enderecoDTO.getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(endereco::setCidade);
+        Optional.ofNullable(enderecoDTO.getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(endereco::setEstado);
+        Optional.ofNullable(enderecoDTO.getCep()).filter(cep -> !cep.isEmpty()).ifPresent(endereco::setCep);
 
         _enderecoRepository.save(endereco);
 
