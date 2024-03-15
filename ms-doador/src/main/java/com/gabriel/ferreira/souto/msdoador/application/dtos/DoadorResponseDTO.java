@@ -17,13 +17,4 @@ public class DoadorResponseDTO {
     private Integer peso;
     private String tipoSanguineo;
     private EnderecoDTO endereco;
-
-    public DoadorResponseDTO(DoadorDTO doadorDTO) {
-        nome = doadorDTO.getNome();
-        email = doadorDTO.getEmail();
-        aniversario = doadorDTO.getAniversario();
-        genero = doadorDTO.getGenero();
-        peso = doadorDTO.getPeso();
-        tipoSanguineo = doadorDTO.getTipoSanguineo();;
-    }
 }
