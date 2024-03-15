@@ -42,7 +42,11 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
+        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
+                () -> new DoadorNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
+        );
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
 
         Optional.ofNullable(doadorRequestDTO.getNome()).filter(nome -> !nome.isEmpty()).ifPresent(doador::setNome);
