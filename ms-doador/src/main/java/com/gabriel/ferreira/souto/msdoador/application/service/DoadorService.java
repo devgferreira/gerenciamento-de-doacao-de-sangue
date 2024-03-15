@@ -77,7 +77,11 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public void deletarDoadorComId(Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
+        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
+                () -> new DoadorNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
+        );
         _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
     }
