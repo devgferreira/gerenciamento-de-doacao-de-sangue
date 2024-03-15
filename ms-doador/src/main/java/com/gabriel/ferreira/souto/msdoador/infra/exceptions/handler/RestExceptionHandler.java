@@ -27,6 +27,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EmailJaExisteException.class)
     public final ResponseEntity<Object> handlerEmailJaExisteException(EmailJaExisteException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE, ex.getMessage());
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
 }
