@@ -31,10 +31,16 @@ public class DoadorController {
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
 
-
     @GetMapping(name = "Buscar Doador", value = "/{doadorId}")
     public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId) {
         DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorComId(doadorId);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
+    @DeleteMapping(name = "Deletar Doador", value = "/{doadorId}")
+    public ResponseEntity<String> deletarDoador(@PathVariable Integer doadorId) {
+        _doadorService.deletarDoadorComId(doadorId);
+        return new ResponseEntity<>("Doador Deletado com Sucesso", HttpStatus.OK);
+    }
+
+
 }
