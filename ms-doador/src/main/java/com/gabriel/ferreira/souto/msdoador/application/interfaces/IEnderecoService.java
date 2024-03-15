@@ -8,4 +8,6 @@ public interface IEnderecoService {
     EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId);
 
     EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId);
+
+    void deletarEndereco(Integer enderecoId);
 }
