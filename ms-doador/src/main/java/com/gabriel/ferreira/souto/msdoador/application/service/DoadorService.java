@@ -10,6 +10,7 @@ import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorNaoEncontradoException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailNaoEncontradoException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.ExceptionResponse;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.constants.ErrorConstants;
 import org.modelmapper.ModelMapper;
@@ -41,7 +42,11 @@ public class DoadorService implements IDoadorService {
                             ErrorConstants.EMAIL_JA_EXISTE));
         }
         _doadorRepository.save(doador);
-        Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow();
+        Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow(
+                () -> new EmailNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.EMAIL_NAO_ENCONTRADO,
+                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
+        );
         _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
