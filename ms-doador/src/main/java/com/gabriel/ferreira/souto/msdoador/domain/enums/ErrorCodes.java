@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCodes {
     DOADOR_NAO_ENCONTRADO("Doador não foi encontrado"),
-    ENDERECO_NAO_ENCONTRADO("Endereço não foi encontrado");
+    ENDERECO_NAO_ENCONTRADO("Endereço não foi encontrado"),
+    EMAIL_JA_EXISTE("Email já existe.");
     private final String mensagem;
 
 }
