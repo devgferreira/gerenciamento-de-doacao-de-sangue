@@ -23,18 +23,14 @@ public class DoadorController {
 
     @PostMapping(name = "Criar Doador")
     public ResponseEntity<DoadorResponseDTO> criarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO){
-        DoadorDTO doadorDTO = _doadorService.criarDoador(doadorRequestDTO);
-        DoadorResponseDTO doadorResponseDTO = new DoadorResponseDTO(doadorDTO);
-        doadorResponseDTO.setEndereco(doadorRequestDTO.getEndereco());
+        DoadorResponseDTO  doadorResponseDTO = _doadorService.criarDoador(doadorRequestDTO);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(name = "Atualizar Doador", value = "/{doadorId}")
     public ResponseEntity<DoadorResponseDTO> atualizaarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO,
                                                            @PathVariable Integer doadorId){
-        DoadorDTO doadorDTO = _doadorService.atualizarDoador(doadorRequestDTO, doadorId);
-        DoadorResponseDTO doadorResponseDTO = new DoadorResponseDTO(doadorDTO);
-        doadorResponseDTO.setEndereco(doadorRequestDTO.getEndereco());
+        DoadorResponseDTO doadorResponseDTO = _doadorService.atualizarDoador(doadorRequestDTO, doadorId);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
 
