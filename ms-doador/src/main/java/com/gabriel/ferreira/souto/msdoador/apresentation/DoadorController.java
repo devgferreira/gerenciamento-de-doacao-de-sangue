@@ -28,6 +28,17 @@ public class DoadorController {
         doadorResponseDTO.setEndereco(doadorRequestDTO.getEndereco());
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.CREATED);
     }
+
+    @PutMapping(name = "Atualizar Doador", value = "/{doadorId}")
+    public ResponseEntity<DoadorResponseDTO> atualizaarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO,
+                                                           @PathVariable Integer doadorId){
+        DoadorDTO doadorDTO = _doadorService.atualizarDoador(doadorRequestDTO, doadorId);
+        DoadorResponseDTO doadorResponseDTO = new DoadorResponseDTO(doadorDTO);
+        doadorResponseDTO.setEndereco(doadorRequestDTO.getEndereco());
+        return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
+    }
+
+
     @GetMapping(name = "Buscar Doador", value = "/{doadorId}")
     public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId){
         DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorComId(doadorId);
