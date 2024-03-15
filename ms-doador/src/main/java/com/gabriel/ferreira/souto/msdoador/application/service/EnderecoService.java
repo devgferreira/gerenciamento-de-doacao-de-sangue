@@ -47,4 +47,10 @@ public class EnderecoService implements IEnderecoService {
 
         return _modelMapper.map(endereco, EnderecoDTO.class);
     }
+
+    @Override
+    public void deletarEnderecoComDoadorId(Integer doadorId) {
+        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow();
+        _enderecoRepository.delete(endereco);
+    }
 }
