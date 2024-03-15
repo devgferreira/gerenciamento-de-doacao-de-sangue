@@ -9,5 +9,5 @@ public interface IEnderecoService {
 
     EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId);
 
-    void deletarEndereco(Integer enderecoId);
+    void deletarEnderecoComDoadorId(Integer doadorId);
 }
