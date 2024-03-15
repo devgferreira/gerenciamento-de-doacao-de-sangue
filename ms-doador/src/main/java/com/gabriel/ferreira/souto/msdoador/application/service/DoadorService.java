@@ -70,6 +70,7 @@ public class DoadorService implements IDoadorService {
     @Override
     public void deletarDoadorComId(Integer doadorId) {
         Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
+        _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
     }
 }
