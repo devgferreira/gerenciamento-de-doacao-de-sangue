@@ -1,6 +1,5 @@
 package com.gabriel.ferreira.souto.msdoador.application.service;
 
-import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorRequestDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorResponseDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
@@ -29,7 +28,7 @@ public class DoadorService implements IDoadorService {
     }
 
     @Override
-        public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
+    public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         _doadorRepository.save(doador);
         Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow();
@@ -70,7 +69,7 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public void deletarDoadorComId(Integer doadorId) {
-        Doador doador =_doadorRepository.findById(doadorId).orElseThrow();
+        Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
         _doadorRepository.delete(doador);
     }
 }

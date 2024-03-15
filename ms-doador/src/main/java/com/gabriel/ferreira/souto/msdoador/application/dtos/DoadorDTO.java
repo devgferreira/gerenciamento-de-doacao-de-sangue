@@ -1,11 +1,11 @@
 package com.gabriel.ferreira.souto.msdoador.application.dtos;
 
-import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,11 +1,9 @@
 package com.gabriel.ferreira.souto.msdoador.domain.model.doador;
 
-import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.*;
-
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

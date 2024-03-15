@@ -1,11 +1,8 @@
 package com.gabriel.ferreira.souto.msdoador.apresentation;
 
-import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorRequestDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorResponseDTO;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IDoadorService;
-import com.gabriel.ferreira.souto.msdoador.domain.model.doador.response.DoadorResponse;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +19,21 @@ public class DoadorController {
     }
 
     @PostMapping(name = "Criar Doador")
-    public ResponseEntity<DoadorResponseDTO> criarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO){
-        DoadorResponseDTO  doadorResponseDTO = _doadorService.criarDoador(doadorRequestDTO);
+    public ResponseEntity<DoadorResponseDTO> criarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO) {
+        DoadorResponseDTO doadorResponseDTO = _doadorService.criarDoador(doadorRequestDTO);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.CREATED);
     }
 
     @PutMapping(name = "Atualizar Doador", value = "/{doadorId}")
     public ResponseEntity<DoadorResponseDTO> atualizaarDoador(@RequestBody DoadorRequestDTO doadorRequestDTO,
-                                                           @PathVariable Integer doadorId){
+                                                              @PathVariable Integer doadorId) {
         DoadorResponseDTO doadorResponseDTO = _doadorService.atualizarDoador(doadorRequestDTO, doadorId);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
 
 
     @GetMapping(name = "Buscar Doador", value = "/{doadorId}")
-    public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId){
+    public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId) {
         DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorComId(doadorId);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
