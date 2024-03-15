@@ -5,8 +5,12 @@ import com.gabriel.ferreira.souto.msdoador.application.dtos.DoadorResponseDTO;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IDoadorService;
 import com.gabriel.ferreira.souto.msdoador.application.interfaces.IEnderecoService;
+import com.gabriel.ferreira.souto.msdoador.domain.enums.ErrorCodes;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorNaoEncontradoException;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.ExceptionResponse;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.constants.ErrorConstants;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +64,11 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow();
+        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
+                () -> new DoadorNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
+        );
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
