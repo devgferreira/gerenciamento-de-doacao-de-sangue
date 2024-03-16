@@ -32,17 +32,8 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
-        boolean enderecoIsNotValid = doadorRequestDTO.getEndereco().getEstado().isEmpty() ||
-                doadorRequestDTO.getEndereco().getCep().isEmpty() ||
-                doadorRequestDTO.getEndereco().getBairro().isEmpty() ||
-                doadorRequestDTO.getEndereco().getCidade().isEmpty();
 
-        if(enderecoIsNotValid){
-            throw new EnderecoInvalidoException(
-                    new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
-                            ErrorConstants.ENDERECO_INVALIDO));
-        }
-
+        validarEndereco(doadorRequestDTO.getEndereco());
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         if(_doadorRepository.findByEmail(doador.getEmail()).isPresent()){
             throw new EmailJaExisteException(
@@ -107,5 +98,14 @@ public class DoadorService implements IDoadorService {
         );
         _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
+    }
+
+    private void validarEndereco(EnderecoDTO endereco) {
+        if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
+                || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
+            throw new EnderecoInvalidoException(
+                    new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
+                            ErrorConstants.ENDERECO_INVALIDO));
+        }
     }
 }
