@@ -62,7 +62,11 @@ public class EnderecoService implements IEnderecoService {
 
     @Override
     public void deletarEnderecoComDoadorId(Integer doadorId) {
-        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow();
+        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
+                () -> new EnderecoNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
+                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
+        );
         _enderecoRepository.delete(endereco);
     }
 }
