@@ -32,8 +32,6 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
-
-        validarEndereco(doadorRequestDTO.getEndereco());
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         if(_doadorRepository.findByEmail(doador.getEmail()).isPresent()){
             throw new EmailJaExisteException(
@@ -86,6 +84,16 @@ public class DoadorService implements IDoadorService {
        Doador doador = validarSeDoadorExisteComId(doadorId);
         _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
+    }
+
+    private void validarDoador(DoadorRequestDTO doadorRequestDTO){
+        boolean doadorInvalid = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
+                || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
+                || doadorRequestDTO.getGenero().isEmpty() || doadorRequestDTO.getTipoSanguineo().isEmpty();
+        if (doadorInvalid){
+            throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO, ErrorConstants.DOADOR_INVALIDO));
+        }
+        validarEndereco(doadorRequestDTO.getEndereco());
     }
 
     private void validarTipoSanguineo(String tipoSanguineo){
