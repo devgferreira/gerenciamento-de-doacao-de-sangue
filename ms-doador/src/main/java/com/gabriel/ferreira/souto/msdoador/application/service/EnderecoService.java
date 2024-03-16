@@ -34,22 +34,13 @@ public class EnderecoService implements IEnderecoService {
 
     @Override
     public EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId) {
-        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
-                () -> new EnderecoNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
-                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
-        );
+        Endereco endereco = validarSeEnderecoExisteComDoadorId(doadorId);
         return _modelMapper.map(endereco, EnderecoDTO.class);
     }
 
     @Override
     public EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId) {
-        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
-                () -> new EnderecoNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
-                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
-        );
-
+        Endereco endereco = validarSeEnderecoExisteComDoadorId(doadorId);
         Optional.ofNullable(enderecoDTO.getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(endereco::setBairro);
         Optional.ofNullable(enderecoDTO.getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(endereco::setCidade);
         Optional.ofNullable(enderecoDTO.getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(endereco::setEstado);
@@ -62,11 +53,15 @@ public class EnderecoService implements IEnderecoService {
 
     @Override
     public void deletarEnderecoComDoadorId(Integer doadorId) {
-        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
+        Endereco endereco = validarSeEnderecoExisteComDoadorId(doadorId);
+        _enderecoRepository.delete(endereco);
+    }
+
+    public Endereco validarSeEnderecoExisteComDoadorId(Integer doadorId){
+        return _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
                 () -> new EnderecoNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
                                 ErrorConstants.EMAIL_NAO_ENCONTRADO))
         );
-        _enderecoRepository.delete(endereco);
     }
 }
