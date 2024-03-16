@@ -88,6 +88,16 @@ public class DoadorService implements IDoadorService {
         _doadorRepository.delete(doador);
     }
 
+    private void validarTipoSanguineo(String tipoSanguineo){
+        tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
+        boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
+                || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
+                tipoSanguineo.equals("AB+") || tipoSanguineo.equals("AB-");
+        if(!tipoSanguineoValid){
+            throw new RuntimeException("Tipo sanguineo inválido, por favor, coloque um tipo válido!");
+        }
+
+    }
 
     private Doador validarSeDoadorExisteComId(Integer doadorId){
         return _doadorRepository.findById(doadorId).orElseThrow(
