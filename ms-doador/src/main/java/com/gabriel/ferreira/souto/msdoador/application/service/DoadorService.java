@@ -70,6 +70,7 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getEndereco().getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(enderecoDTO::setEstado);
         Optional.ofNullable(doadorRequestDTO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
 
+        validarEndereco(enderecoDTO);
         _doadorRepository.save(doador);
         _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
 
