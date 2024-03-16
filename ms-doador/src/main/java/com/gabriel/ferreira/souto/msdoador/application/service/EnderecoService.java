@@ -44,7 +44,11 @@ public class EnderecoService implements IEnderecoService {
 
     @Override
     public EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId) {
-        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow();
+        Endereco endereco = _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
+                () -> new EnderecoNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
+                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
+        );
 
         Optional.ofNullable(enderecoDTO.getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(endereco::setBairro);
         Optional.ofNullable(enderecoDTO.getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(endereco::setCidade);
