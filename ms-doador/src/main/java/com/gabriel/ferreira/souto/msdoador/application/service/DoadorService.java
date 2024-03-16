@@ -8,10 +8,7 @@ import com.gabriel.ferreira.souto.msdoador.application.interfaces.IEnderecoServi
 import com.gabriel.ferreira.souto.msdoador.domain.enums.ErrorCodes;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoador.infra.exceptions.ExceptionResponse;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.*;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.constants.ErrorConstants;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,17 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
+        boolean enderecoIsNotValid = doadorRequestDTO.getEndereco().getEstado().isEmpty() ||
+                doadorRequestDTO.getEndereco().getCep().isEmpty() ||
+                doadorRequestDTO.getEndereco().getBairro().isEmpty() ||
+                doadorRequestDTO.getEndereco().getCidade().isEmpty();
+
+        if(enderecoIsNotValid){
+            throw new EnderecoInvalidoException(
+                    new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
+                            ErrorConstants.ENDERECO_INVALIDO));
+        }
+
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         if(_doadorRepository.findByEmail(doador.getEmail()).isPresent()){
             throw new EmailJaExisteException(
