@@ -36,4 +36,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
+    @ExceptionHandler(TipoSanguineoInvalidoException.class)
+    public final ResponseEntity<Object> handlerTipoSanguineoInvalidoException(TipoSanguineoInvalidoException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.TIPO_SANGUINEO_INVALIDO, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
 }
