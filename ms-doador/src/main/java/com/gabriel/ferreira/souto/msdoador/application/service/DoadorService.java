@@ -52,11 +52,7 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
-                () -> new DoadorNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
-        );
+        Doador doador = validarSeDoadorExisteComId(doadorId);
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
 
         Optional.ofNullable(doadorRequestDTO.getNome()).filter(nome -> !nome.isEmpty()).ifPresent(doador::setNome);
@@ -70,7 +66,6 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getEndereco().getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(enderecoDTO::setEstado);
         Optional.ofNullable(doadorRequestDTO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
 
-        validarEndereco(enderecoDTO);
         _doadorRepository.save(doador);
         _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
 
@@ -79,11 +74,7 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
-                () -> new DoadorNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
-        );
+        Doador doador = validarSeDoadorExisteComId(doadorId);
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
@@ -92,15 +83,19 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public void deletarDoadorComId(Integer doadorId) {
-        Doador doador = _doadorRepository.findById(doadorId).orElseThrow(
-                () -> new DoadorNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
-        );
+       Doador doador = validarSeDoadorExisteComId(doadorId);
         _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
     }
 
+
+    private Doador validarSeDoadorExisteComId(Integer doadorId){
+        return _doadorRepository.findById(doadorId).orElseThrow(
+                () -> new DoadorNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
+        );
+    }
     private void validarEndereco(EnderecoDTO endereco) {
         if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
                 || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
