@@ -4,3 +4,13 @@ spring:
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
+  application:
+    name: ms-doador
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}]
