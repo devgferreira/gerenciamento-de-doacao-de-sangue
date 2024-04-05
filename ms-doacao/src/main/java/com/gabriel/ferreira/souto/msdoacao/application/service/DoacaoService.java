@@ -2,9 +2,13 @@ package com.gabriel.ferreira.souto.msdoacao.application.service;
 
 import com.gabriel.ferreira.souto.msdoacao.application.dtos.DoacaoDTO;
 import com.gabriel.ferreira.souto.msdoacao.application.interfaces.IDoacaoService;
+import com.gabriel.ferreira.souto.msdoacao.domain.enums.ErrorCodes;
 import com.gabriel.ferreira.souto.msdoacao.domain.interfaces.IDoacaoRepository;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doacao.Doacao;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoacaoNaoEncontradoException;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.ExceptionResponse;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
 import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.DoadorControllerClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +52,8 @@ public class DoacaoService implements IDoacaoService {
     public DoacaoDTO buscarDoacaoPorId(Integer doacaoId) {
         Optional<Doacao> doacao = _doacaoRepository.findById(doacaoId);
         if (doacao.isEmpty()){
-            throw new RuntimeException("Doação não encontrada");
+            throw new DoacaoNaoEncontradoException(
+                    new ExceptionResponse(ErrorCodes.DOACAO_NAO_ENCONTRADA, ErrorConstants.DOACAO_NAO_ENCONTRADO));
         }
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
