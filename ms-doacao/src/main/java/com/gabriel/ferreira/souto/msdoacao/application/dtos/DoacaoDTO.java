@@ -1,4 +1,4 @@
-package com.gabriel.ferreira.souto.msdoacao.domain.application.dtos;
+package com.gabriel.ferreira.souto.msdoacao.application.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
