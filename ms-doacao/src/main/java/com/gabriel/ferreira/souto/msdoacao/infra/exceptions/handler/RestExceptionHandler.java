@@ -18,6 +18,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
-
+    @ExceptionHandler(DoacaoNaoEncontradoException.class)
+    public final ResponseEntity<Object> handlerDoacaoNaoEncontradoException(DoacaoNaoEncontradoException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.DOACAO_NAO_ENCONTRADA, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
 
 }
