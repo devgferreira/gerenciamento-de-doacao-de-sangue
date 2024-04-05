@@ -7,6 +7,7 @@ import com.gabriel.ferreira.souto.msdoacao.domain.interfaces.IDoacaoRepository;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doacao.Doacao;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoacaoNaoEncontradoException;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoadorNaoEncontradoException;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.ExceptionResponse;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
 import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.DoadorControllerClient;
@@ -34,7 +35,8 @@ public class DoacaoService implements IDoacaoService {
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
         ResponseEntity<DoadorResponse> doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
         if (doadorResponse == null){
-            throw new RuntimeException("Doador não encontrado");
+            throw new DoadorNaoEncontradoException(
+                    new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO, ErrorConstants.DOADOR_NAO_ENCONTRADO));
         }
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
         return _modelMapper.map(_doacaoRepository.save(doacao), DoacaoDTO.class);
