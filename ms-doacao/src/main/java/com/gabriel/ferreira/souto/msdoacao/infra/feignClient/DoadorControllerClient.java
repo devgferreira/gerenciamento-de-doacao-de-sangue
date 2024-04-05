@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "ms-doador", path = "/doadores")
+@FeignClient(value = "ms-doador", path = "/api/doadores")
 public interface DoadorControllerClient {
     @GetMapping(value = "/{doadorId}")
     ResponseEntity<DoadorResponse> buscarDoadorComId(@PathVariable Integer doadorId);
