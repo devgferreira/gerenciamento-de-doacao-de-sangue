@@ -4,12 +4,11 @@ import com.gabriel.ferreira.souto.msdoacao.application.dtos.DoacaoDTO;
 import com.gabriel.ferreira.souto.msdoacao.application.interfaces.IDoacaoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("/api/doacoes")
 public class DoacaoController {
     private final IDoacaoService _doacaoService;
 
@@ -28,5 +27,12 @@ public class DoacaoController {
         List<DoacaoDTO> doacoes = _doacaoService.listarTodasAsDoacao();
         return  ResponseEntity.ok(doacoes);
     }
+
+    @GetMapping(value = "/{doacaoId}")
+    public ResponseEntity<DoacaoDTO> buscarDoacaoPorId(@PathVariable Integer doacaoId){
+        DoacaoDTO doacaoDTO = _doacaoService.buscarDoacaoPorId(doacaoId);
+        return new ResponseEntity<>(doacaoDTO, HttpStatus.OK);
+    }
+
 
 }
