@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,10 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public DoacaoDTO buscarDoacaoPorId(Integer doacaoId) {
-        return null;
+        Optional<Doacao> doacao = _doacaoRepository.findById(doacaoId);
+        if (doacao.isEmpty()){
+            throw new RuntimeException("Doação não encontrada");
+        }
+        return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 }
