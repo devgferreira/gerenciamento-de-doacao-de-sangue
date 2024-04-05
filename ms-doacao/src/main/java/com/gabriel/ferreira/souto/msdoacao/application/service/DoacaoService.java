@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoacaoService implements IDoacaoService {
@@ -36,7 +37,10 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public List<DoacaoDTO> listarTodasAsDoacao() {
-        return null;
+        List<Doacao> doacoes = _doacaoRepository.findAll();
+        return doacoes.stream().map(
+                doacao -> _modelMapper.map(doacao, DoacaoDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
