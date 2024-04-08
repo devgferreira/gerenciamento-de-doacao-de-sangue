@@ -52,11 +52,14 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public DoacaoDTO buscarDoacaoPorId(Integer doacaoId) {
-        Optional<Doacao> doacao = _doacaoRepository.findById(doacaoId);
-        if (doacao.isEmpty()){
-            throw new DoacaoNaoEncontradoException(
-                    new ExceptionResponse(ErrorCodes.DOACAO_NAO_ENCONTRADA, ErrorConstants.DOACAO_NAO_ENCONTRADO));
-        }
+
+        Doacao doacao = _doacaoRepository.findById(doacaoId).orElseThrow(
+                () ->
+                        new DoacaoNaoEncontradoException(
+                                new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                        ErrorConstants.DOADOR_NAO_ENCONTRADO))
+        );
+
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 }
