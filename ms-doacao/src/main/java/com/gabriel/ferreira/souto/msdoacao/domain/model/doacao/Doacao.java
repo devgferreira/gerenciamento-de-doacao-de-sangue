@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,5 @@ public class Doacao {
     private Integer id;
     private Integer doadorId;
     private Integer sangueML;
+    private Date diaDaDoacao;
 }
