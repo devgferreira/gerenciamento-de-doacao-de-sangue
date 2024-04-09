@@ -6,10 +6,7 @@ import com.gabriel.ferreira.souto.msdoacao.domain.enums.ErrorCodes;
 import com.gabriel.ferreira.souto.msdoacao.domain.interfaces.IDoacaoRepository;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doacao.Doacao;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
-import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoacaoNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoadorNaoEncontradoException;
-import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.ExceptionResponse;
-import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.PesoInvalidoException;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.*;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
 import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.DoadorControllerClient;
 import org.modelmapper.ModelMapper;
@@ -45,10 +42,8 @@ public class DoacaoService implements IDoacaoService {
         if(doadorResponse.getPeso() < 50){
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
-        int idade = validarIdade(doadorResponse.getAniversario());
-        if(idade < 18){
-            throw new RuntimeException();
-        }
+        validarIdade(doadorResponse.getAniversario());
+
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
         return _modelMapper.map(_doacaoRepository.save(doacao), DoacaoDTO.class);
     }
@@ -74,7 +69,7 @@ public class DoacaoService implements IDoacaoService {
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 
-    public static int validarIdade(Date dataNasc) {
+    public void validarIdade(Date dataNasc) {
         Calendar nasc = Calendar.getInstance();
         nasc.setTime(dataNasc);
         Calendar atual = Calendar.getInstance();
@@ -87,6 +82,9 @@ public class DoacaoService implements IDoacaoService {
                 && atual.get(Calendar.DAY_OF_MONTH) < nasc.get(Calendar.DAY_OF_MONTH)) {
             idade--;
         }
-        return idade;
+        if(idade < 18){
+            throw new IdadeInvalidaException(new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ErrorConstants.IDADE_INVALIDA));
+        }
+
     }
 }
