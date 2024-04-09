@@ -7,4 +7,5 @@ import lombok.Getter;
 public class ErrorConstants {
     public static final String DOADOR_NAO_ENCONTRADO = "Ms-Doacao - Doador não encontrado";
     public static final String DOACAO_NAO_ENCONTRADO = "Ms-Doacao - Doação não encontrado";
+    public static final String PESO_INVALIDO = "Ms-Doacao - Peso inválido, minímo de 50kg para realizar a doação";
 }
