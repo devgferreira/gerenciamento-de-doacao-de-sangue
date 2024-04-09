@@ -35,10 +35,6 @@ public class DoacaoService implements IDoacaoService {
     @Override
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
         DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
-        if (doadorResponse == null){
-            throw new DoadorNaoEncontradoException(
-                    new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO, ErrorConstants.DOADOR_NAO_ENCONTRADO));
-        }
         if(doadorResponse.getPeso() < 50){
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
@@ -62,8 +58,8 @@ public class DoacaoService implements IDoacaoService {
         Doacao doacao = _doacaoRepository.findById(doacaoId).orElseThrow(
                 () ->
                         new DoacaoNaoEncontradoException(
-                                new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                        ErrorConstants.DOADOR_NAO_ENCONTRADO))
+                                new ExceptionResponse(ErrorCodes.DOACAO_NAO_ENCONTRADA,
+                                        ErrorConstants.DOACAO_NAO_ENCONTRADO))
         );
 
         return _modelMapper.map(doacao, DoacaoDTO.class);
