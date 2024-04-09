@@ -39,8 +39,10 @@ public class DoacaoService implements IDoacaoService {
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
         validarIdade(doadorResponse.getAniversario());
+        verificarUltimaDoacao(doadorResponse.getGenero(), doadorResponse.getId());
 
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
+        doacao.setDiaDaDoacao(new Date());
         return _modelMapper.map(_doacaoRepository.save(doacao), DoacaoDTO.class);
     }
 
@@ -65,7 +67,7 @@ public class DoacaoService implements IDoacaoService {
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 
-    public void validarIdade(Date dataNasc) {
+    public static void validarIdade(Date dataNasc) {
         Calendar nasc = Calendar.getInstance();
         nasc.setTime(dataNasc);
         Calendar atual = Calendar.getInstance();
@@ -81,6 +83,22 @@ public class DoacaoService implements IDoacaoService {
         if(idade < 18){
             throw new IdadeInvalidaException(new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ErrorConstants.IDADE_INVALIDA));
         }
-
+    }
+    public void verificarUltimaDoacao(String genero, Integer doadorId) {
+        Date hoje = new Date();
+        Doacao doacao = _doacaoRepository.findFirstByDoadorIdOrderByIdDesc(doadorId);
+        if(doacao == null){
+           return;
+        }
+        long diferenca = hoje.getTime() - doacao.getDiaDaDoacao().getTime();
+        long ultimaDoacao = diferenca / (1000 * 60 * 60 * 24);
+        boolean verificarUltimaDoacaoM = ultimaDoacao < 90 && genero.equals("M");
+        boolean verificarUltimaDoacaoF = ultimaDoacao < 60 && genero.equals("F");
+        if (verificarUltimaDoacaoM) {
+            throw new RuntimeException("Homem mais 90 dias");
+        }
+        if (verificarUltimaDoacaoF) {
+            throw new RuntimeException("mULHER MAIS 60 DIAS");
+        }
     }
 }
