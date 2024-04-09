@@ -9,12 +9,16 @@ import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoacaoNaoEncontradoException;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.DoadorNaoEncontradoException;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.ExceptionResponse;
+import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.PesoInvalidoException;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
 import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.DoadorControllerClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,10 +37,17 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
-        ResponseEntity<DoadorResponse> doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
+        DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
         if (doadorResponse == null){
             throw new DoadorNaoEncontradoException(
                     new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO, ErrorConstants.DOADOR_NAO_ENCONTRADO));
+        }
+        if(doadorResponse.getPeso() < 50){
+            throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
+        }
+        int idade = validarIdade(doadorResponse.getAniversario());
+        if(idade < 18){
+            throw new RuntimeException();
         }
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
         return _modelMapper.map(_doacaoRepository.save(doacao), DoacaoDTO.class);
@@ -61,5 +72,21 @@ public class DoacaoService implements IDoacaoService {
         );
 
         return _modelMapper.map(doacao, DoacaoDTO.class);
+    }
+
+    public static int validarIdade(Date dataNasc) {
+        Calendar nasc = Calendar.getInstance();
+        nasc.setTime(dataNasc);
+        Calendar atual = Calendar.getInstance();
+
+        int idade = atual.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
+
+        if (atual.get(Calendar.MONTH) < nasc.get(Calendar.MONTH)) {
+            idade--;
+        } else if (atual.get(Calendar.MONTH) == nasc.get(Calendar.MONTH)
+                && atual.get(Calendar.DAY_OF_MONTH) < nasc.get(Calendar.DAY_OF_MONTH)) {
+            idade--;
+        }
+        return idade;
     }
 }
