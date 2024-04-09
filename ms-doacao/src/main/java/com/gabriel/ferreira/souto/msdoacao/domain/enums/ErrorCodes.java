@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCodes {
     DOADOR_NAO_ENCONTRADO("Doador não foi encontrado"),
-    DOACAO_NAO_ENCONTRADA("Doação não encontrada");
+    DOACAO_NAO_ENCONTRADA("Doação não encontrada"),
+    PESO_INVALIDO ("Ms-Doacao - Peso inválido, minímo de 50kg para realizar a doação");
     private final String mensagem;
 }
