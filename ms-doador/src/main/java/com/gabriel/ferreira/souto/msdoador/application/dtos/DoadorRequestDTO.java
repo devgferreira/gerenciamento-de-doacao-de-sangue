@@ -1,5 +1,6 @@
 package com.gabriel.ferreira.souto.msdoador.application.dtos;
 
+import com.gabriel.ferreira.souto.msdoador.domain.enums.Genero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class DoadorRequestDTO {
     private String nome;
     private String email;
     private Date aniversario;
-    private String genero;
+    private Genero genero;
     private Integer peso;
     private String tipoSanguineo;
     private EnderecoDTO endereco;
