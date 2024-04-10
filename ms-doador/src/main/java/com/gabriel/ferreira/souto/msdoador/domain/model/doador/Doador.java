@@ -1,5 +1,6 @@
 package com.gabriel.ferreira.souto.msdoador.domain.model.doador;
 
+import com.gabriel.ferreira.souto.msdoador.domain.enums.Genero;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Doador {
     private String nome;
     private String email;
     private Date aniversario;
-    private String genero;
+    private Genero genero;
     private Integer peso;
     private String tipoSanguineo;
 }
