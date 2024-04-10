@@ -35,6 +35,11 @@ public class DoacaoService implements IDoacaoService {
     @Override
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
         DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
+        if (doacaoDTO.getSangueML() < 420 || doacaoDTO.getSangueML() > 470 ){
+            throw new QuantidadeDeSangueInvalidaException(
+                    new ExceptionResponse(ErrorCodes.QUANTIDADE_DE_SANGUE_INVALIDA, ErrorConstants.QUANTIDADE_DE_SANGUE_INVALIDA)
+            );
+        }
         if(doadorResponse.getPeso() < 50){
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
@@ -85,11 +90,11 @@ public class DoacaoService implements IDoacaoService {
         }
     }
     public void verificarUltimaDoacao(String genero, Integer doadorId) {
-        Date hoje = new Date();
         Doacao doacao = _doacaoRepository.findFirstByDoadorIdOrderByIdDesc(doadorId);
         if(doacao == null){
            return;
         }
+        Date hoje = new Date();
         long diferenca = hoje.getTime() - doacao.getDiaDaDoacao().getTime();
         long ultimaDoacao = diferenca / (1000 * 60 * 60 * 24);
         boolean verificarUltimaDoacaoM = ultimaDoacao < 90 && genero.equals("M");
