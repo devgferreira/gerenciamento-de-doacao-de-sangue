@@ -19,9 +19,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handlerPesoInvalidoException(PesoInvalidoException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
-    }@ExceptionHandler(IdadeInvalidaException.class)
+    }
+    @ExceptionHandler(IdadeInvalidaException.class)
     public final ResponseEntity<Object> handlerIdadeInvalidaException(IdadeInvalidaException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
+    @ExceptionHandler(NaoEPossivelDoarMException.class)
+    public final ResponseEntity<Object> handlerNaoEPossivelDoarException(NaoEPossivelDoarMException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_M, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
 
