@@ -30,5 +30,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_M, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
+    @ExceptionHandler(NaoEPossivelDoarFException.class)
+    public final ResponseEntity<Object> handlerNaoEPossivelDoarFException(NaoEPossivelDoarFException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_F, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
 
 }
