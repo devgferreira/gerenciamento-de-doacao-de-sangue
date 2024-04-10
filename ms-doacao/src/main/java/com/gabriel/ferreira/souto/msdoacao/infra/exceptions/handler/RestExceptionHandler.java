@@ -35,5 +35,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_F, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
+    @ExceptionHandler(QuantidadeDeSangueInvalidaException.class)
+    public final ResponseEntity<Object> handlerQuantidadeDeSangueInvalidaException(QuantidadeDeSangueInvalidaException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.QUANTIDADE_DE_SANGUE_INVALIDA, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
 
 }
