@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gerenciamentoDeDoacaoDeSangueDB
+    url: jdbc:postgresql://localhost:5432/gerenciamento-de-doacao-de-sangue
     username: postgres
     password: 123
     driver-class-name: org.postgresql.Driver
@@ -10,10 +10,14 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   application:
-    name: ms-doador
+    name: ms-doacao
+  main:
+    allow-bean-definition-overriding: true
+
 
 server:
   port: 0
+
 
 eureka:
   client:
@@ -21,4 +25,4 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     hostname: localhost
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}]
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
