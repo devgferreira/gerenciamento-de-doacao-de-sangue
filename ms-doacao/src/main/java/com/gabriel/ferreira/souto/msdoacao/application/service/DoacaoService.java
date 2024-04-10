@@ -95,10 +95,14 @@ public class DoacaoService implements IDoacaoService {
         boolean verificarUltimaDoacaoM = ultimaDoacao < 90 && genero.equals("M");
         boolean verificarUltimaDoacaoF = ultimaDoacao < 60 && genero.equals("F");
         if (verificarUltimaDoacaoM) {
-            throw new RuntimeException("Homem mais 90 dias");
+            throw new NaoEPossivelDoarMException(
+                    new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_M,
+                    ErrorConstants.NAO_E_POSIVEL_DOAR_M));
         }
         if (verificarUltimaDoacaoF) {
-            throw new RuntimeException("mULHER MAIS 60 DIAS");
+            throw new NaoEPossivelDoarFException(
+                    new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_F,
+                            ErrorConstants.NAO_E_POSSIVEL_DOAR_F));
         }
     }
 }
