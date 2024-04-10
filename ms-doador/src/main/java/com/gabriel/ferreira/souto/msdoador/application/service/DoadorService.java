@@ -57,7 +57,7 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getEmail()).filter(email -> !email.isEmpty()).ifPresent(doador::setEmail);
         Optional.ofNullable(doadorRequestDTO.getAniversario()).ifPresent(doador::setAniversario);
         Optional.ofNullable(doadorRequestDTO.getPeso()).ifPresent(doador::setPeso);
-        Optional.ofNullable(doadorRequestDTO.getGenero()).filter(genero -> !genero.isEmpty()).ifPresent(doador::setGenero);
+        Optional.ofNullable(doadorRequestDTO.getGenero()).ifPresent(doador::setGenero);
         Optional.ofNullable(doadorRequestDTO.getTipoSanguineo()).filter(tipoSanguineo -> !tipoSanguineo.isEmpty()).ifPresent(doador::setTipoSanguineo);
         Optional.ofNullable(doadorRequestDTO.getEndereco().getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(enderecoDTO::setBairro);
         Optional.ofNullable(doadorRequestDTO.getEndereco().getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(enderecoDTO::setCidade);
@@ -86,7 +86,7 @@ public class DoadorService implements IDoadorService {
     private void validarDoador(DoadorRequestDTO doadorRequestDTO){
         boolean doadorInvalid = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
                 || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
-                || doadorRequestDTO.getGenero().isEmpty() || doadorRequestDTO.getTipoSanguineo().isEmpty();
+                || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
         if (doadorInvalid){
             throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO,
                     ErrorConstants.DOADOR_INVALIDO));
