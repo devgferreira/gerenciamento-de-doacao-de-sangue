@@ -31,9 +31,14 @@ public class DoadorController {
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
 
-    @GetMapping(name = "Buscar Doador", value = "/{doadorId}")
+    @GetMapping(name = "Buscar Doador", value = "/id/{doadorId}")
     public ResponseEntity<DoadorResponseDTO> buscarDoadorComId(@PathVariable Integer doadorId) {
         DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorComId(doadorId);
+        return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
+    }
+    @GetMapping(name = "Buscar Doador Por Cpf", value = "/cpf/{cpf}")
+    public ResponseEntity<DoadorResponseDTO> buscarDoadorPorCpf(@PathVariable String cpf) {
+        DoadorResponseDTO doadorResponseDTO = _doadorService.buscarDoadorPorCpf(cpf);
         return new ResponseEntity<>(doadorResponseDTO, HttpStatus.OK);
     }
     @DeleteMapping(name = "Deletar Doador", value = "/{doadorId}")
