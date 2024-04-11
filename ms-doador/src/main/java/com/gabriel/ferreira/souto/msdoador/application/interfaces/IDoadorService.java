@@ -9,6 +9,7 @@ public interface IDoadorService {
     DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId);
 
     DoadorResponseDTO buscarDoadorComId(Integer doadorId);
+    DoadorResponseDTO buscarDoadorPorCpf(String cpf);
 
     void deletarDoadorComId(Integer doadorId);
 }
