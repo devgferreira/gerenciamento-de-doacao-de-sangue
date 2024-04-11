@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class DoacaoDTO {
     private String cpf;
-    private Integer doadorId;
     private Integer sangueML;
 }
