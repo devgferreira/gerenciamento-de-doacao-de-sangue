@@ -77,6 +77,16 @@ public class DoadorService implements IDoadorService {
         doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
     }
+
+    @Override
+    public DoadorResponseDTO buscarDoadorPorCpf(String cpf) {
+      Doador doador = _doadorRepository.findByCpf(cpf).orElseThrow();
+      EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doador.getId());
+      DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
+      doadorResponseDTO.setEndereco(enderecoDTO);
+      return doadorResponseDTO;
+    }
+
     @Override
     public void deletarDoadorComId(Integer doadorId) {
        Doador doador = validarSeDoadorExisteComId(doadorId);
