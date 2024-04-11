@@ -10,6 +10,7 @@ import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.*;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.constants.ErrorConstants;
+import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,8 +102,10 @@ public class DoadorService implements IDoadorService {
                 || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
                 || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
         if (doadorInvalid){
-            throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO,
-                    ErrorConstants.DOADOR_INVALIDO));
+            throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO, ErrorConstants.DOADOR_INVALIDO));
+        }
+        if(!validarCpf(doadorRequestDTO.getCpf())){
+            throw new CpfInvalidoException(new ExceptionResponse(ErrorCodes.CPF_INVALIDO, ErrorConstants.CPF_INVALIDO));
         }
         validarEndereco(doadorRequestDTO.getEndereco());
     }
@@ -131,5 +134,11 @@ public class DoadorService implements IDoadorService {
                     new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
                             ErrorConstants.ENDERECO_INVALIDO));
         }
+    }
+    public boolean validarCpf(String cpf) {
+        CPFValidator validator = new CPFValidator();
+        validator.initialize(null);
+        return validator.isValid(cpf, null);
+
     }
 }
