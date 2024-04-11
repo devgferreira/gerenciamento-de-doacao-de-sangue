@@ -10,6 +10,7 @@ public enum ErrorCodes {
     DOADOR_INVALIDO("Doador inválido, por favor, preencha todos os campos"),
     TIPO_SANGUINEO_INVALIDO("Tipo sanguineo inválido, por favor, coloque um tipo válido."),
     EMAIL_JA_EXISTE("Email já existe."),
+    CPF_INVALIDO (" Ms-Doador - CPF Inválido."),
     EMAIL_NAO_ENCONTRADO("Email não encontrado."),
     ENDERECO_INVALIDO("Endereço inváilido, por favor, preencha todos os campos."),
     ENDERECO_NAO_ENCONTRADO("Endereço não foi encontrado");
