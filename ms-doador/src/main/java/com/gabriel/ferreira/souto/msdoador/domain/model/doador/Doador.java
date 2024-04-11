@@ -19,6 +19,7 @@ public class Doador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String cpf;
     private String nome;
     private String email;
     private Date aniversario;
