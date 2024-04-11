@@ -8,5 +8,5 @@ import java.util.Date;
 
 @Repository
 public interface IDoacaoRepository extends JpaRepository<Doacao, Integer> {
-    Doacao findFirstByDoadorIdOrderByIdDesc(Integer doadorId);
+    Doacao findFirstByCpfOrderByIdDesc(String cpf);
 }
