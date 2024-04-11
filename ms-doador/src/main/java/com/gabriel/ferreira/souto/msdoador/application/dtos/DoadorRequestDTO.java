@@ -11,8 +11,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DoadorRequestDTO {
-    private String nome;
     private String cpf;
+    private String nome;
     private String email;
     private Date aniversario;
     private Genero genero;

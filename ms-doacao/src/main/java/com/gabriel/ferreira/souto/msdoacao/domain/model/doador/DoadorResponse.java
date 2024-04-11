@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class DoadorResponse {
-    private Integer id;
+    private String cpf;
     private String nome;
     private String email;
     private Date aniversario;
