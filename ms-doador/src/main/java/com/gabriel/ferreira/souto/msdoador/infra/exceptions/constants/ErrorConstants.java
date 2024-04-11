@@ -10,6 +10,7 @@ public class ErrorConstants {
     public static final String TIPO_SANGUINEO_INVALIDO = " Ms-Doador - Tipo sanguineo inválido.";
     public static final String EMAIL_JA_EXISTE = " Ms-Doador - Email já existe.";
     public static final String EMAIL_NAO_ENCONTRADO = " Ms-Doador - Email não encontrado.";
+    public static final String CPF_INVALIDO = " Ms-Doador - CPF Inválido.";
     public static final String ENDERECO_NAO_ENCONTRADO = " Ms-Doador - Endereço não encontrado.";
     public static final String ENDERECO_INVALIDO = " Ms-Doador - Endereço Inválido.";
 }
