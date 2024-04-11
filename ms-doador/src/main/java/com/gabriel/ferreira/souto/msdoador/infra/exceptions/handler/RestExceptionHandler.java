@@ -47,4 +47,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.CPF_INVALIDO, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
+    @ExceptionHandler(CpfJaExisteException.class)
+    public final ResponseEntity<Object> handlerCpfJaExisteException(CpfJaExisteException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.CPF_JA_EXISTE, ex.getMessage());
+        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
+    }
 }
