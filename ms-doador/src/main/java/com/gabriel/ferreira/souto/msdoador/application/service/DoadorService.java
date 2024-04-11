@@ -41,9 +41,9 @@ public class DoadorService implements IDoadorService {
         }
         _doadorRepository.save(doador);
         Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow(
-                () -> new EmailNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.EMAIL_NAO_ENCONTRADO,
-                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
+                () -> new DoadorNaoEncontradoException(
+                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
         _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
@@ -80,7 +80,10 @@ public class DoadorService implements IDoadorService {
 
     @Override
     public DoadorResponseDTO buscarDoadorPorCpf(String cpf) {
-      Doador doador = _doadorRepository.findByCpf(cpf).orElseThrow();
+      Doador doador = _doadorRepository.findByCpf(cpf).orElseThrow(
+              () -> new DoadorNaoEncontradoException(new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                      ErrorConstants.DOADOR_NAO_ENCONTRADO))
+      );
       EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doador.getId());
       DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
       doadorResponseDTO.setEndereco(enderecoDTO);
