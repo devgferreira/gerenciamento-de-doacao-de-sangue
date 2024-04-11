@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class DoadorRequestDTO {
     private String nome;
+    private String cpf;
     private String email;
     private Date aniversario;
     private Genero genero;
