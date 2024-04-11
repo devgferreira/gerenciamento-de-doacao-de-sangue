@@ -11,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DoadorResponseDTO {
-    private Integer id;
     private String cpf;
     private String nome;
     private String email;
