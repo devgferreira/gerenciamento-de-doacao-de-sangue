@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(value = "ms-doador", path = "/api/doadores")
 public interface DoadorControllerClient {
-    @GetMapping(value = "/{doadorId}")
-    DoadorResponse buscarDoadorComId(@PathVariable Integer doadorId);
+    @GetMapping(value = "cpf/{cpf}")
+    DoadorResponse buscarDoadorPorCpf(@PathVariable String cpf);
 }
