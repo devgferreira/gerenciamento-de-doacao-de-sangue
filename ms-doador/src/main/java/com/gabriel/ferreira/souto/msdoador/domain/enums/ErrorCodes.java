@@ -11,7 +11,7 @@ public enum ErrorCodes {
     TIPO_SANGUINEO_INVALIDO("Tipo sanguineo inválido, por favor, coloque um tipo válido."),
     EMAIL_JA_EXISTE("Email já existe."),
     CPF_INVALIDO ("CPF Inválido."),
-    EMAIL_NAO_ENCONTRADO("Email não encontrado."),
+    CPF_JA_EXISTE ("CPF já existe."),
     ENDERECO_INVALIDO("Endereço inváilido, por favor, preencha todos os campos."),
     ENDERECO_NAO_ENCONTRADO("Endereço não foi encontrado");
     private final String mensagem;

@@ -26,11 +26,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE, ex.getMessage());
         return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
     }
-    @ExceptionHandler(EmailNaoEncontradoException.class)
-    public final ResponseEntity<Object> handlerEmailNaoEncontradoException(EmailNaoEncontradoException ex){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE, ex.getMessage());
-        return  ResponseEntity.status(HttpStatus.OK).body(exceptionResponse);
-    }
+
     @ExceptionHandler(EnderecoInvalidoException.class)
     public final ResponseEntity<Object> handlerEnderecoInvalidoException(EnderecoInvalidoException ex){
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO, ex.getMessage());

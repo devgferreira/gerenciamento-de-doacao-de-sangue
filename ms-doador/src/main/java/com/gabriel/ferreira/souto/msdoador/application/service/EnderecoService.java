@@ -61,7 +61,7 @@ public class EnderecoService implements IEnderecoService {
         return _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
                 () -> new EnderecoNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
-                                ErrorConstants.EMAIL_NAO_ENCONTRADO))
+                                ErrorConstants.ENDERECO_NAO_ENCONTRADO))
         );
     }
 }
