@@ -8,25 +8,22 @@ import com.gabriel.ferreira.souto.msdoacao.domain.model.doacao.Doacao;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.*;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
-import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.DoadorControllerClient;
+import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.IDoadorControllerClient;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class DoacaoService implements IDoacaoService {
     private final ModelMapper _modelMapper;
     private final IDoacaoRepository _doacaoRepository;
-    private final DoadorControllerClient _doadorControllerClient;
+    private final IDoadorControllerClient _doadorControllerClient;
 
-    public DoacaoService(ModelMapper modelMapper, IDoacaoRepository doacaoRepository, DoadorControllerClient doadorControllerClient) {
+    public DoacaoService(ModelMapper modelMapper, IDoacaoRepository doacaoRepository, IDoadorControllerClient doadorControllerClient) {
         _modelMapper = modelMapper;
         _doacaoRepository = doacaoRepository;
         _doadorControllerClient = doadorControllerClient;
@@ -34,7 +31,7 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
-        DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorComId(doacaoDTO.getDoadorId());
+        DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorPorCpf(doacaoDTO.getCpf());
         if (doacaoDTO.getSangueML() < 420 || doacaoDTO.getSangueML() > 470 ){
             throw new QuantidadeDeSangueInvalidaException(
                     new ExceptionResponse(ErrorCodes.QUANTIDADE_DE_SANGUE_INVALIDA, ErrorConstants.QUANTIDADE_DE_SANGUE_INVALIDA)
@@ -44,7 +41,7 @@ public class DoacaoService implements IDoacaoService {
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
         validarIdade(doadorResponse.getAniversario());
-        verificarUltimaDoacao(doadorResponse.getGenero(), doadorResponse.getId());
+        verificarUltimaDoacao(doadorResponse.getGenero(), doadorResponse.getCpf());
 
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
         doacao.setDiaDaDoacao(new Date());
@@ -61,14 +58,12 @@ public class DoacaoService implements IDoacaoService {
 
     @Override
     public DoacaoDTO buscarDoacaoPorId(Integer doacaoId) {
-
         Doacao doacao = _doacaoRepository.findById(doacaoId).orElseThrow(
                 () ->
                         new DoacaoNaoEncontradoException(
                                 new ExceptionResponse(ErrorCodes.DOACAO_NAO_ENCONTRADA,
                                         ErrorConstants.DOACAO_NAO_ENCONTRADO))
         );
-
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 
@@ -89,8 +84,8 @@ public class DoacaoService implements IDoacaoService {
             throw new IdadeInvalidaException(new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ErrorConstants.IDADE_INVALIDA));
         }
     }
-    public void verificarUltimaDoacao(String genero, Integer doadorId) {
-        Doacao doacao = _doacaoRepository.findFirstByDoadorIdOrderByIdDesc(doadorId);
+    public void verificarUltimaDoacao(String genero, String cpf) {
+        Doacao doacao = _doacaoRepository.findFirstByCpfOrderByIdDesc(cpf);
         if(doacao == null){
            return;
         }
