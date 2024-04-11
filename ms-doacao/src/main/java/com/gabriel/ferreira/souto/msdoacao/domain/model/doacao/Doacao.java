@@ -17,7 +17,7 @@ import java.util.Date;
 public class Doacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String cpf;
     private Integer doadorId;
     private Integer sangueML;
     private Date diaDaDoacao;
