@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EstoqueDTO {
+    private Integer id;
     private String tipoSanguineo;
     private Integer sangueML;
 }
