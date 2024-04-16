@@ -2,6 +2,7 @@ package com.gabriel.ferreira.souto.msestoque.application.service;
 
 import com.gabriel.ferreira.souto.msestoque.application.dto.EstoqueDTO;
 import com.gabriel.ferreira.souto.msestoque.application.interfaces.IEstoqueService;
+import com.gabriel.ferreira.souto.msestoque.domain.model.estoque.Estoque;
 import com.gabriel.ferreira.souto.msestoque.domain.repository.IEstoqueRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class EstoqueService implements IEstoqueService {
 
     @Override
     public EstoqueDTO buscarEstoquePorId(Integer id) {
-        return null;
+        Estoque estoque = _estoqueRepository.findById(id).orElseThrow();
+        return _modelMapper.map(estoque, EstoqueDTO.class);
     }
 }
