@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EstoqueService implements IEstoqueService {
@@ -21,7 +22,10 @@ public class EstoqueService implements IEstoqueService {
 
     @Override
     public List<EstoqueDTO> bsucarTodasOsEstoques() {
-        return null;
+        List<Estoque> estoques = _estoqueRepository.findAll();
+        return estoques.stream().map(
+                        estoque -> _modelMapper.map(estoque, EstoqueDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
