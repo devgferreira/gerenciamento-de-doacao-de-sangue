@@ -22,7 +22,10 @@ public class EmitirEstoqueDeSangueConsumer {
     public void ReceberEstoqueDeSangue(@Payload String payload){
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Estoque estoque = mapper.readValue(payload, Estoque.class);
+            Estoque result = mapper.readValue(payload, Estoque.class);
+            Estoque estoque = _estoqueRepository.findByTipoSanguineo(result.getTipoSanguineo());
+            Integer valorSomadoSangueMl = estoque.getSangueML() + result.getSangueML();
+            estoque.setSangueML(valorSomadoSangueMl);
             _estoqueRepository.save(estoque);
         } catch (Exception e) {
             log.error("Erro ao receber solicitacao de emitir-proposta-resultado-votacao: {}", e.getMessage());
