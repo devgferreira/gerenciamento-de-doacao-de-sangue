@@ -1,4 +1,4 @@
-package com.gabriel.ferreira.souto.msestoque.infra.modelMapper;
+package com.gabriel.ferreira.souto.msestoque.infra.config.modelMapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
