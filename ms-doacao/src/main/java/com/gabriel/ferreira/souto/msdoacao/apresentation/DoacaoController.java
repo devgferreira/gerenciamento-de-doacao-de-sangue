@@ -1,5 +1,6 @@
 package com.gabriel.ferreira.souto.msdoacao.apresentation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gabriel.ferreira.souto.msdoacao.application.dtos.DoacaoDTO;
 import com.gabriel.ferreira.souto.msdoacao.application.interfaces.IDoacaoService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class DoacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<DoacaoDTO> criarDoacao(@RequestBody DoacaoDTO doacaoDTO){
+    public ResponseEntity<DoacaoDTO> criarDoacao(@RequestBody DoacaoDTO doacaoDTO) throws JsonProcessingException {
         DoacaoDTO doacaoDTOResult = _doacaoService.criarDoacao(doacaoDTO);
         return new ResponseEntity<>(doacaoDTOResult, HttpStatus.CREATED);
     }

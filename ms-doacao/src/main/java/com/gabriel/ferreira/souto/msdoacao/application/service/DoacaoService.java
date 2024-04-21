@@ -1,14 +1,17 @@
 package com.gabriel.ferreira.souto.msdoacao.application.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gabriel.ferreira.souto.msdoacao.application.dtos.DoacaoDTO;
 import com.gabriel.ferreira.souto.msdoacao.application.interfaces.IDoacaoService;
 import com.gabriel.ferreira.souto.msdoacao.domain.enums.ErrorCodes;
 import com.gabriel.ferreira.souto.msdoacao.domain.interfaces.IDoacaoRepository;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doacao.Doacao;
 import com.gabriel.ferreira.souto.msdoacao.domain.model.doador.DoadorResponse;
+import com.gabriel.ferreira.souto.msdoacao.domain.model.estoque.Estoque;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.*;
 import com.gabriel.ferreira.souto.msdoacao.infra.exceptions.constants.ErrorConstants;
 import com.gabriel.ferreira.souto.msdoacao.infra.feignClient.IDoadorControllerClient;
+import com.gabriel.ferreira.souto.msdoacao.infra.rabbitMQQueue.EmitirEstoqueDeSanguePublisher;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +25,17 @@ public class DoacaoService implements IDoacaoService {
     private final ModelMapper _modelMapper;
     private final IDoacaoRepository _doacaoRepository;
     private final IDoadorControllerClient _doadorControllerClient;
+    private final EmitirEstoqueDeSanguePublisher _emitirEstoqueDeSanguePublisher;
 
-    public DoacaoService(ModelMapper modelMapper, IDoacaoRepository doacaoRepository, IDoadorControllerClient doadorControllerClient) {
+    public DoacaoService(ModelMapper modelMapper, IDoacaoRepository doacaoRepository, IDoadorControllerClient doadorControllerClient, EmitirEstoqueDeSanguePublisher emitirEstoqueDeSanguePublisher) {
         _modelMapper = modelMapper;
         _doacaoRepository = doacaoRepository;
         _doadorControllerClient = doadorControllerClient;
+        _emitirEstoqueDeSanguePublisher = emitirEstoqueDeSanguePublisher;
     }
 
     @Override
-    public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) {
+    public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) throws JsonProcessingException {
         DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorPorCpf(doacaoDTO.getCpf());
         if (doacaoDTO.getSangueML() < 420 || doacaoDTO.getSangueML() > 470 ){
             throw new QuantidadeDeSangueInvalidaException(
@@ -43,8 +48,11 @@ public class DoacaoService implements IDoacaoService {
         validarIdade(doadorResponse.getAniversario());
         verificarUltimaDoacao(doadorResponse.getGenero(), doadorResponse.getCpf());
 
+
         Doacao doacao = _modelMapper.map(doacaoDTO, Doacao.class);
         doacao.setDiaDaDoacao(new Date());
+        Estoque estoque = new Estoque(doadorResponse.getTipoSanguineo(), doacao.getSangueML());
+        _emitirEstoqueDeSanguePublisher.emitirEstoqueDeSangue(estoque);
         return _modelMapper.map(_doacaoRepository.save(doacao), DoacaoDTO.class);
     }
 

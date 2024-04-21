@@ -20,6 +20,7 @@ public class MsCloudGetewayApplication {
 		return builder.routes()
 				.route(r -> r.path("/api/doadores/**").uri("lb://ms-doador"))
 				.route(r -> r.path("/api/doacoes/**").uri("lb://ms-doacao"))
+				.route(r -> r.path("/api/estoques/**").uri("lb://ms-estoque"))
 				.build();
 	}
 }
