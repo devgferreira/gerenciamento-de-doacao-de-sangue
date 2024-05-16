@@ -34,15 +34,33 @@ public class DoacaoService implements IDoacaoService {
         _emitirEstoqueDeSanguePublisher = emitirEstoqueDeSanguePublisher;
     }
 
+    public static void validarIdade(Date dataNasc) {
+        Calendar nasc = Calendar.getInstance();
+        nasc.setTime(dataNasc);
+        Calendar atual = Calendar.getInstance();
+
+        int idade = atual.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
+
+        if (atual.get(Calendar.MONTH) < nasc.get(Calendar.MONTH)) {
+            idade--;
+        } else if (atual.get(Calendar.MONTH) == nasc.get(Calendar.MONTH)
+                && atual.get(Calendar.DAY_OF_MONTH) < nasc.get(Calendar.DAY_OF_MONTH)) {
+            idade--;
+        }
+        if (idade < 18) {
+            throw new IdadeInvalidaException(new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ErrorConstants.IDADE_INVALIDA));
+        }
+    }
+
     @Override
     public DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) throws JsonProcessingException {
         DoadorResponse doadorResponse = _doadorControllerClient.buscarDoadorPorCpf(doacaoDTO.getCpf());
-        if (doacaoDTO.getSangueML() < 420 || doacaoDTO.getSangueML() > 470 ){
+        if (doacaoDTO.getSangueML() < 420 || doacaoDTO.getSangueML() > 470) {
             throw new QuantidadeDeSangueInvalidaException(
                     new ExceptionResponse(ErrorCodes.QUANTIDADE_DE_SANGUE_INVALIDA, ErrorConstants.QUANTIDADE_DE_SANGUE_INVALIDA)
             );
         }
-        if(doadorResponse.getPeso() < 50){
+        if (doadorResponse.getPeso() < 50) {
             throw new PesoInvalidoException(new ExceptionResponse(ErrorCodes.PESO_INVALIDO, ErrorConstants.PESO_INVALIDO));
         }
         validarIdade(doadorResponse.getAniversario());
@@ -60,7 +78,7 @@ public class DoacaoService implements IDoacaoService {
     public List<DoacaoDTO> listarTodasAsDoacao() {
         List<Doacao> doacoes = _doacaoRepository.findAll();
         return doacoes.stream().map(
-                doacao -> _modelMapper.map(doacao, DoacaoDTO.class))
+                        doacao -> _modelMapper.map(doacao, DoacaoDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -75,27 +93,10 @@ public class DoacaoService implements IDoacaoService {
         return _modelMapper.map(doacao, DoacaoDTO.class);
     }
 
-    public static void validarIdade(Date dataNasc) {
-        Calendar nasc = Calendar.getInstance();
-        nasc.setTime(dataNasc);
-        Calendar atual = Calendar.getInstance();
-
-        int idade = atual.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
-
-        if (atual.get(Calendar.MONTH) < nasc.get(Calendar.MONTH)) {
-            idade--;
-        } else if (atual.get(Calendar.MONTH) == nasc.get(Calendar.MONTH)
-                && atual.get(Calendar.DAY_OF_MONTH) < nasc.get(Calendar.DAY_OF_MONTH)) {
-            idade--;
-        }
-        if(idade < 18){
-            throw new IdadeInvalidaException(new ExceptionResponse(ErrorCodes.IDADE_INVALIDA, ErrorConstants.IDADE_INVALIDA));
-        }
-    }
     public void verificarUltimaDoacao(String genero, String cpf) {
         Doacao doacao = _doacaoRepository.findFirstByCpfOrderByIdDesc(cpf);
-        if(doacao == null){
-           return;
+        if (doacao == null) {
+            return;
         }
         Date hoje = new Date();
         long diferenca = hoje.getTime() - doacao.getDiaDaDoacao().getTime();
@@ -105,7 +106,7 @@ public class DoacaoService implements IDoacaoService {
         if (verificarUltimaDoacaoM) {
             throw new NaoEPossivelDoarMException(
                     new ExceptionResponse(ErrorCodes.NAO_E_POSSIVEL_DOAR_M,
-                    ErrorConstants.NAO_E_POSIVEL_DOAR_M));
+                            ErrorConstants.NAO_E_POSIVEL_DOAR_M));
         }
         if (verificarUltimaDoacaoF) {
             throw new NaoEPossivelDoarFException(

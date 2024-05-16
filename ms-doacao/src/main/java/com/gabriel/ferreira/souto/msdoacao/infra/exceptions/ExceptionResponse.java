@@ -7,6 +7,7 @@ import lombok.Data;
 public class ExceptionResponse {
     private final String code;
     private final String mensagem;
+
     public ExceptionResponse(final ErrorCodes errorCode, String details) {
         this.code = errorCode.name();
         this.mensagem = errorCode.getMensagem();

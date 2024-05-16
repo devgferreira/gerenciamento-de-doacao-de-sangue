@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface IDoadorRepository extends JpaRepository<Doador, Integer> {
     Optional<Doador> findByEmail(String email);
+
     Optional<Doador> findByCpf(String cpf);
 }

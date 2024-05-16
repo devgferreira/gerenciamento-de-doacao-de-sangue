@@ -30,16 +30,17 @@ public class DoadorService implements IDoadorService {
         _enderecoService = enderecoService;
         _doadorRepository = doadorRepository;
     }
+
     @Override
     public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
         validarDoador(doadorRequestDTO);
         validarTipoSanguineo(doadorRequestDTO.getTipoSanguineo());
-        if(_doadorRepository.findByEmail(doadorRequestDTO.getEmail()).isPresent()){
+        if (_doadorRepository.findByEmail(doadorRequestDTO.getEmail()).isPresent()) {
             throw new EmailJaExisteException(
                     new ExceptionResponse(ErrorCodes.EMAIL_JA_EXISTE,
                             ErrorConstants.EMAIL_JA_EXISTE));
         }
-        if(_doadorRepository.findByCpf(doadorRequestDTO.getCpf()).isPresent()){
+        if (_doadorRepository.findByCpf(doadorRequestDTO.getCpf()).isPresent()) {
             throw new CpfJaExisteException(
                     new ExceptionResponse(ErrorCodes.CPF_JA_EXISTE,
                             ErrorConstants.CPF_JA_EXISTE));
@@ -54,6 +55,7 @@ public class DoadorService implements IDoadorService {
         _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
+
     @Override
     public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
@@ -75,6 +77,7 @@ public class DoadorService implements IDoadorService {
 
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
+
     @Override
     public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
@@ -87,8 +90,8 @@ public class DoadorService implements IDoadorService {
     @Override
     public DoadorResponseDTO buscarDoadorPorCpf(String cpf) {
         Doador doador = _doadorRepository.findByCpf(cpf).orElseThrow(
-              () -> new DoadorNaoEncontradoException(new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                      ErrorConstants.DOADOR_NAO_ENCONTRADO))
+                () -> new DoadorNaoEncontradoException(new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
+                        ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
         EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doador.getId());
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
@@ -102,18 +105,20 @@ public class DoadorService implements IDoadorService {
         _enderecoService.deletarEnderecoComDoadorId(doadorId);
         _doadorRepository.delete(doador);
     }
-    private void validarDoador(DoadorRequestDTO doadorRequestDTO){
+
+    private void validarDoador(DoadorRequestDTO doadorRequestDTO) {
         boolean doadorInvalido = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
                 || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
                 || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
-        if (doadorInvalido){
+        if (doadorInvalido) {
             throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO, ErrorConstants.DOADOR_INVALIDO));
         }
-        if(!validarCpf(doadorRequestDTO.getCpf())){
+        if (!validarCpf(doadorRequestDTO.getCpf())) {
             throw new CpfInvalidoException(new ExceptionResponse(ErrorCodes.CPF_INVALIDO, ErrorConstants.CPF_INVALIDO));
         }
         validarEndereco(doadorRequestDTO.getEndereco());
     }
+
     private void validarEndereco(EnderecoDTO endereco) {
         if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
                 || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
@@ -122,23 +127,26 @@ public class DoadorService implements IDoadorService {
                             ErrorConstants.ENDERECO_INVALIDO));
         }
     }
-    private void validarTipoSanguineo(String tipoSanguineo){
+
+    private void validarTipoSanguineo(String tipoSanguineo) {
         tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
         boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
                 || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
                 tipoSanguineo.equals("AB+") || tipoSanguineo.equals("AB-");
-        if(!tipoSanguineoValid){
+        if (!tipoSanguineoValid) {
             throw new TipoSanguineoInvalidoException(new ExceptionResponse(ErrorCodes.TIPO_SANGUINEO_INVALIDO,
                     ErrorConstants.TIPO_SANGUINEO_INVALIDO));
         }
     }
-    private Doador validarSeDoadorExisteComId(Integer doadorId){
+
+    private Doador validarSeDoadorExisteComId(Integer doadorId) {
         return _doadorRepository.findById(doadorId).orElseThrow(
                 () -> new DoadorNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
                                 ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
     }
+
     public boolean validarCpf(String cpf) {
         CPFValidator validator = new CPFValidator();
         validator.initialize(null);

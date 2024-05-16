@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabriel.ferreira.souto.msestoque.domain.model.estoque.Estoque;
 import com.gabriel.ferreira.souto.msestoque.domain.repository.IEstoqueRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import java.util.Queue;
 
 @Component
 @Slf4j
@@ -19,7 +18,7 @@ public class EmitirEstoqueDeSangueConsumer {
     }
 
     @RabbitListener(queues = "${mq.queues.emitir-estoque-de-sangue}")
-    public void ReceberEstoqueDeSangue(@Payload String payload){
+    public void ReceberEstoqueDeSangue(@Payload String payload) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Estoque result = mapper.readValue(payload, Estoque.class);

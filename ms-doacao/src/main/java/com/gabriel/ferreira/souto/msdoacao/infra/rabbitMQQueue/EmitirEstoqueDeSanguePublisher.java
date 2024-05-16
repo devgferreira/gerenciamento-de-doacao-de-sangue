@@ -16,6 +16,7 @@ public class EmitirEstoqueDeSanguePublisher {
         _rabbitTemplate = rabbitTemplate;
         _queueEmitirEstoqueDeSangue = queueEmitirEstoqueDeSangue;
     }
+
     public void emitirEstoqueDeSangue(Estoque dados) throws JsonProcessingException {
         String json = convertIntoJson(dados);
         _rabbitTemplate.convertAndSend(_queueEmitirEstoqueDeSangue.getActualName(), json);

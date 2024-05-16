@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/doacoes")
 public class DoacaoController {
@@ -24,13 +25,13 @@ public class DoacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DoacaoDTO>> listarTodasAsDoacoes(){
+    public ResponseEntity<List<DoacaoDTO>> listarTodasAsDoacoes() {
         List<DoacaoDTO> doacoes = _doacaoService.listarTodasAsDoacao();
-        return  ResponseEntity.ok(doacoes);
+        return ResponseEntity.ok(doacoes);
     }
 
     @GetMapping(value = "/{doacaoId}")
-    public ResponseEntity<DoacaoDTO> buscarDoacaoPorId(@PathVariable Integer doacaoId){
+    public ResponseEntity<DoacaoDTO> buscarDoacaoPorId(@PathVariable Integer doacaoId) {
         DoacaoDTO doacaoDTO = _doacaoService.buscarDoacaoPorId(doacaoId);
         return new ResponseEntity<>(doacaoDTO, HttpStatus.OK);
     }

@@ -57,7 +57,7 @@ public class EnderecoService implements IEnderecoService {
         _enderecoRepository.delete(endereco);
     }
 
-    public Endereco validarSeEnderecoExisteComDoadorId(Integer doadorId){
+    public Endereco validarSeEnderecoExisteComDoadorId(Integer doadorId) {
         return _enderecoRepository.findByDoadorId(doadorId).orElseThrow(
                 () -> new EnderecoNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,
