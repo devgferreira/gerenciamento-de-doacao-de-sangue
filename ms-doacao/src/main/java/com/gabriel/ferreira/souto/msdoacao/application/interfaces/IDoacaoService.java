@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface IDoacaoService {
     DoacaoDTO criarDoacao(DoacaoDTO doacaoDTO) throws JsonProcessingException;
+
     List<DoacaoDTO> listarTodasAsDoacao();
+
     DoacaoDTO buscarDoacaoPorId(Integer doacaoId);
 }

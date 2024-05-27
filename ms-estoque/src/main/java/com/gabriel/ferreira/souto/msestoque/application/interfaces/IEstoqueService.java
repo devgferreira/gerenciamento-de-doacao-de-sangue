@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IEstoqueService {
     List<EstoqueDTO> bsucarTodasOsEstoques();
+
     EstoqueDTO buscarEstoquePorId(Integer id);
 }

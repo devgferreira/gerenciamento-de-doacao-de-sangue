@@ -12,15 +12,16 @@ import org.springframework.context.annotation.Bean;
 @EnableDiscoveryClient
 public class MsCloudGetewayApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MsCloudGetewayApplication.class, args);
-	}
-	@Bean
-	public RouteLocator routeLocator(RouteLocatorBuilder builder){
-		return builder.routes()
-				.route(r -> r.path("/api/doadores/**").uri("lb://ms-doador"))
-				.route(r -> r.path("/api/doacoes/**").uri("lb://ms-doacao"))
-				.route(r -> r.path("/api/estoques/**").uri("lb://ms-estoque"))
-				.build();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MsCloudGetewayApplication.class, args);
+    }
+
+    @Bean
+    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(r -> r.path("/api/doadores/**").uri("lb://ms-doador"))
+                .route(r -> r.path("/api/doacoes/**").uri("lb://ms-doacao"))
+                .route(r -> r.path("/api/estoques/**").uri("lb://ms-estoque"))
+                .build();
+    }
 }

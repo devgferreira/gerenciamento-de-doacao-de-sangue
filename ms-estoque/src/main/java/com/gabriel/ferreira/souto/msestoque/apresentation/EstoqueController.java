@@ -19,13 +19,15 @@ public class EstoqueController {
     public EstoqueController(IEstoqueService estoqueService) {
         _estoqueService = estoqueService;
     }
+
     @GetMapping(value = "/{estoqueId}")
-    public ResponseEntity<EstoqueDTO> buscarEstoquePorId(@PathVariable Integer estoqueId){
+    public ResponseEntity<EstoqueDTO> buscarEstoquePorId(@PathVariable Integer estoqueId) {
         EstoqueDTO estoqueDTO = _estoqueService.buscarEstoquePorId(estoqueId);
         return new ResponseEntity<>(estoqueDTO, HttpStatus.OK);
     }
+
     @GetMapping()
-    public ResponseEntity<List<EstoqueDTO>> bsucarTodosOsEstoques(){
+    public ResponseEntity<List<EstoqueDTO>> bsucarTodosOsEstoques() {
         List<EstoqueDTO> estoquesDTO = _estoqueService.bsucarTodasOsEstoques();
         return new ResponseEntity<>(estoquesDTO, HttpStatus.OK);
     }
