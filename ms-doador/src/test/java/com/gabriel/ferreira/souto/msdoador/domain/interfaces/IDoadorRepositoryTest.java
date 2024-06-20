@@ -21,4 +21,12 @@ class IDoadorRepositoryTest {
         assertTrue(result.getId() > 0);
         assertEquals(DOADOR_VALIDO, result);
     }
+    @Test
+    void testDoador_QuandoFindById_RetornandoDoador(){
+        _doadorRepository.save(DOADOR_VALIDO);
+        Doador result = _doadorRepository.findById(DOADOR_VALIDO.getId()).get();
+        assertNotNull(result);
+        assertEquals(DOADOR_VALIDO.getId(), result.getId());
+    }
+
 }
