@@ -10,6 +10,7 @@ import static com.gabriel.ferreira.souto.msdoador.common.DoadorConstants.*;
 import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,5 +50,14 @@ public class DoadorServiceTest {
         DoadorResponseDTO result = _doadorService.criarDoador(DOADOR_REQUEST_DTO_VALIDO);
 
         assertNotNull(result);
+        assertEquals(DOADOR_REQUEST_DTO_VALIDO.getCpf(), result.getCpf());
+    }
+    @Test
+    void testCriarDoador_QuandoEmailJaExiste_RetornandoThrowEmailJaExisteException(){
+        when(_doadorRepository.findByEmail(anyString())).thenReturn(Optional.of(DOADOR_VALIDO));
+
+        assertThrows(EmailJaExisteException.class, ()->{
+                    _doadorService.criarDoador(DOADOR_REQUEST_DTO_VALIDO);
+                });
     }
 }
