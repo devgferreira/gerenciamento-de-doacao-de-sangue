@@ -106,7 +106,7 @@ public class DoadorService implements IDoadorService {
         _doadorRepository.delete(doador);
     }
 
-    private void validarDoador(DoadorRequestDTO doadorRequestDTO) {
+    private static void validarDoador(DoadorRequestDTO doadorRequestDTO) {
         boolean doadorInvalido = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
                 || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
                 || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
@@ -119,7 +119,7 @@ public class DoadorService implements IDoadorService {
         validarEndereco(doadorRequestDTO.getEndereco());
     }
 
-    private void validarEndereco(EnderecoDTO endereco) {
+    private static void validarEndereco(EnderecoDTO endereco) {
         if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
                 || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
             throw new EnderecoInvalidoException(
@@ -128,7 +128,7 @@ public class DoadorService implements IDoadorService {
         }
     }
 
-    private void validarTipoSanguineo(String tipoSanguineo) {
+    private static void validarTipoSanguineo(String tipoSanguineo) {
         tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
         boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
                 || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
@@ -147,7 +147,7 @@ public class DoadorService implements IDoadorService {
         );
     }
 
-    public boolean validarCpf(String cpf) {
+    private  static boolean validarCpf(String cpf) {
         CPFValidator validator = new CPFValidator();
         validator.initialize(null);
         return validator.isValid(cpf, null);

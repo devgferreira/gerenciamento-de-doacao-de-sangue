@@ -35,4 +35,11 @@ class IDoadorRepositoryTest {
         assertNotNull(result);
         assertEquals(DOADOR_VALIDO.getCpf(), result.getCpf());
     }
+    @Test
+    void testDoador_QuandoFindByEmail_RetornandoDoador(){
+        _doadorRepository.save(DOADOR_VALIDO);
+        Doador result = _doadorRepository.findByEmail(DOADOR_VALIDO.getEmail()).get();
+        assertNotNull(result);
+        assertEquals(DOADOR_VALIDO.getEmail(), result.getEmail());
+    }
 }
