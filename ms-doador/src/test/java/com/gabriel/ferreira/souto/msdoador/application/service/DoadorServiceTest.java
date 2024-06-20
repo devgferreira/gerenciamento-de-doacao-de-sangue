@@ -10,6 +10,7 @@ import static com.gabriel.ferreira.souto.msdoador.common.DoadorConstants.*;
 import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.CpfJaExisteException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,5 +60,13 @@ public class DoadorServiceTest {
         assertThrows(EmailJaExisteException.class, ()->{
                     _doadorService.criarDoador(DOADOR_REQUEST_DTO_VALIDO);
                 });
+    }
+    @Test
+    void testCriarDoador_QuandoCpfJaExiste_RetornandoThrowEmailCpfJaExisteException(){
+        when(_doadorRepository.findByCpf(anyString())).thenReturn(Optional.of(DOADOR_VALIDO));
+
+        assertThrows(CpfJaExisteException.class, ()->{
+            _doadorService.criarDoador(DOADOR_REQUEST_DTO_VALIDO);
+        });
     }
 }
