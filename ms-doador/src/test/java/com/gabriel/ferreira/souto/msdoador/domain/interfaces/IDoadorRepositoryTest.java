@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.Date;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class IDoadorRepositoryTest {
@@ -71,5 +73,19 @@ class IDoadorRepositoryTest {
         assertNotNull(result);
         assertEquals("Rafael", result.getNome());
         assertEquals("rafel@gmail.com", result.getEmail());
+    }
+    @Test
+    void testDoador_QuandoDeletar_RetornandoDoadorDeletado(){
+
+        Doador doador0 = new Doador("82116296072", "Gabriel", "gabrie@gmail.com",
+                new Date(), Genero.M, 60, "B-");
+
+        _doadorRepository.save(doador0);
+        _doadorRepository.deleteById(doador0.getId());
+
+        Optional<Doador> result= _doadorRepository.findById(doador0.getId());
+
+        assertTrue(result.isEmpty());
+
     }
 }
