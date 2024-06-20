@@ -10,6 +10,7 @@ import static com.gabriel.ferreira.souto.msdoador.common.DoadorConstants.*;
 import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.CpfInvalidoException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.CpfJaExisteException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorInvalidoException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
@@ -75,6 +76,13 @@ public class DoadorServiceTest {
 
         assertThrows(DoadorInvalidoException.class, ()->{
             _doadorService.criarDoador(DOADOR_REQUEST_DTO_INVALIDO);
+        });
+    }
+    @Test
+    void testCriarDoador_ComDoadorInvalido_RetornandoThrowCpfInvalidoException(){
+
+        assertThrows(CpfInvalidoException.class, ()->{
+            _doadorService.criarDoador(DOADOR_REQUEST_DTO_COM_CPF_INVALIDO);
         });
     }
 }
