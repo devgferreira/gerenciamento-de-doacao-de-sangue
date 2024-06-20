@@ -3,7 +3,7 @@ package com.gabriel.ferreira.souto.msdoador.application.interfaces;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 
 public interface IEnderecoService {
-    EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO, Integer doadorId);
+    EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO, String doadorCpf);
 
     EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId);
 

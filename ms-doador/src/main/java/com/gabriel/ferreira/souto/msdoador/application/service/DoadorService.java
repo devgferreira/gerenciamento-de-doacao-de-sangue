@@ -47,12 +47,7 @@ public class DoadorService implements IDoadorService {
         }
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         _doadorRepository.save(doador);
-        Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow(
-                () -> new DoadorNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
-        );
-        _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
+        _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), doadorRequestDTO.getCpf());
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
 
