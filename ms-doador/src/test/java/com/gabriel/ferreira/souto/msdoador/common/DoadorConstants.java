@@ -17,10 +17,21 @@ public class DoadorConstants {
             new DoadorRequestDTO("82116296072", "Gabriel", "gabrie@gmail.com",
             new Date(), Genero.M, 60, "B-",
             new EnderecoDTO("Vila Maria", "SP", "SP", "02128020"));
+
+    public static final DoadorRequestDTO DOADOR_REQUEST_DTO_COM_ENDERECO_INVALIDO =
+            new DoadorRequestDTO("82116296072", "Gabriel", "gabrie@gmail.com",
+            new Date(), Genero.M, 60, "B-",
+            new EnderecoDTO("", "", "", ""));
+
     public static final DoadorRequestDTO DOADOR_REQUEST_DTO_COM_CPF_INVALIDO =
-            new DoadorRequestDTO("821162960721", "Gabriel", "gabrie@gmail.com",
-                    new Date(), Genero.M, 60, "B-",
-                    new EnderecoDTO("Vila Maria", "SP", "SP", "02128020"));
+            new DoadorRequestDTO("8211629607", "Gabriel", "gabrie@gmail.com",
+            new Date(), Genero.M, 60, "B-",
+            new EnderecoDTO("Vila Maria", "SP", "SP", "02128020"));
+
+    public static final DoadorRequestDTO DOADOR_REQUEST_DTO_COM_TIPO_SANGUINEO_INVALIDO =
+            new DoadorRequestDTO("82116296072", "Gabriel", "gabrie@gmail.com",
+            new Date(), Genero.M, 60, "C-",
+            new EnderecoDTO("Vila Maria", "SP", "SP", "02128020"));
 
     public static final DoadorRequestDTO DOADOR_REQUEST_DTO_INVALIDO =
             new DoadorRequestDTO("", "", "",
