@@ -28,5 +28,11 @@ class IDoadorRepositoryTest {
         assertNotNull(result);
         assertEquals(DOADOR_VALIDO.getId(), result.getId());
     }
-
+    @Test
+    void testDoador_QuandoFindByCpf_RetornandoDoador(){
+        _doadorRepository.save(DOADOR_VALIDO);
+        Doador result = _doadorRepository.findByCpf(DOADOR_VALIDO.getCpf()).get();
+        assertNotNull(result);
+        assertEquals(DOADOR_VALIDO.getCpf(), result.getCpf());
+    }
 }
