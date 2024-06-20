@@ -11,6 +11,7 @@ import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IDoadorRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.doador.Doador;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.CpfJaExisteException;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.DoadorInvalidoException;
 import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +37,7 @@ public class DoadorServiceTest {
     @InjectMocks
     private DoadorService _doadorService;
     @Test
-    void testCriarDoador_QuandoDoadorValidoSalvo_RetornandoDoador(){
+    void testCriarDoador_ComDoadorValidoSalvo_RetornandoDoador(){
 
         when(_doadorRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         when(_doadorRepository.findByCpf(anyString())).thenReturn(Optional.empty());
@@ -62,11 +63,18 @@ public class DoadorServiceTest {
                 });
     }
     @Test
-    void testCriarDoador_QuandoCpfJaExiste_RetornandoThrowEmailCpfJaExisteException(){
+    void testCriarDoador_QuandoCpfJaExiste_RetornandoThrowCpfJaExisteException(){
         when(_doadorRepository.findByCpf(anyString())).thenReturn(Optional.of(DOADOR_VALIDO));
 
         assertThrows(CpfJaExisteException.class, ()->{
             _doadorService.criarDoador(DOADOR_REQUEST_DTO_VALIDO);
+        });
+    }
+    @Test
+    void testCriarDoador_ComDoadorInvalido_RetornandoThrowDoadorInvalidoException(){
+
+        assertThrows(DoadorInvalidoException.class, ()->{
+            _doadorService.criarDoador(DOADOR_REQUEST_DTO_INVALIDO);
         });
     }
 }
