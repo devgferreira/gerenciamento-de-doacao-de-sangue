@@ -89,6 +89,12 @@ public class DoadorServiceTest {
             _doadorService.criarDoador(DOADOR_REQUEST_DTO_COM_TIPO_SANGUINEO_INVALIDO);
         });
     }
+    @Test
+    void testCriarDoador_QuandoEnderecoInvalido_RetornandoThrowEnderecoInvalidoException(){
 
+        assertThrows(EnderecoInvalidoException.class, ()->{
+            _doadorService.criarDoador(DOADOR_REQUEST_DTO_COM_ENDERECO_INVALIDO);
+        });
+    }
 
 }
