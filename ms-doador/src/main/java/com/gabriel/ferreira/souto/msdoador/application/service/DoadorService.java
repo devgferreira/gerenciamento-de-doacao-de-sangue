@@ -54,7 +54,7 @@ public class DoadorService implements IDoadorService {
     @Override
     public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
 
         Optional.ofNullable(doadorRequestDTO.getNome()).filter(nome -> !nome.isEmpty()).ifPresent(doador::setNome);
         Optional.ofNullable(doadorRequestDTO.getEmail()).filter(email -> !email.isEmpty()).ifPresent(doador::setEmail);
@@ -68,7 +68,7 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
 
         _doadorRepository.save(doador);
-        _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
+        _enderecoService.atualizarEndereco(enderecoDTO, doador.getCpf());
 
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
@@ -76,7 +76,7 @@ public class DoadorService implements IDoadorService {
     @Override
     public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
@@ -88,7 +88,7 @@ public class DoadorService implements IDoadorService {
                 () -> new DoadorNaoEncontradoException(new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
                         ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doador.getId());
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
@@ -97,7 +97,7 @@ public class DoadorService implements IDoadorService {
     @Override
     public void deletarDoadorComId(Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        _enderecoService.deletarEnderecoComDoadorId(doadorId);
+        _enderecoService.deletarEnderecoComDoadorCpf(doador.getCpf());
         _doadorRepository.delete(doador);
     }
 

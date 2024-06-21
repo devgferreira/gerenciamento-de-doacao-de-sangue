@@ -5,9 +5,9 @@ import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 public interface IEnderecoService {
     EnderecoDTO criarEndereco(EnderecoDTO enderecoDTO, String doadorCpf);
 
-    EnderecoDTO buscarEnderecoComDoadorId(Integer doadorId);
+    EnderecoDTO buscarEnderecoComDoadorCpf(String doadorCpf);
 
-    EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, Integer doadorId);
+    EnderecoDTO atualizarEndereco(EnderecoDTO enderecoDTO, String doadorCpf);
 
-    void deletarEnderecoComDoadorId(Integer doadorId);
+    void deletarEnderecoComDoadorCpf(String doadorCpf);
 }
