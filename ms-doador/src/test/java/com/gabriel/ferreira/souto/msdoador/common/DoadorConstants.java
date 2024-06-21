@@ -12,6 +12,9 @@ public class DoadorConstants {
     public static final Doador DOADOR_VALIDO =
             new Doador("82116296072", "Gabriel", "gabrie@gmail.com",
             new Date(), Genero.M, 60, "B-");
+    public static final Doador DOADOR_VALIDO_2 =
+            new Doador("82116296072", "Lucas", "lucas@gmail.com",
+                    new Date(), Genero.M, 80, "A+-");
 
     public static final DoadorRequestDTO DOADOR_REQUEST_DTO_VALIDO =
             new DoadorRequestDTO("82116296072", "Gabriel", "gabrie@gmail.com",
