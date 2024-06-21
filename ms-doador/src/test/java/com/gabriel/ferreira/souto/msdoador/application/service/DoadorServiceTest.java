@@ -125,5 +125,12 @@ public class DoadorServiceTest {
 
         assertNotNull(result);
     }
+    @Test
+    void testCriarDoador_QuandoDoadorNaoEncontrado_RetornandoThrowDoadorNaoEncontradoException(){
+
+        assertThrows(DoadorNaoEncontradoException.class, ()->{
+            _doadorService.atualizarDoador(DOADOR_REQUEST_DTO_COM_ENDERECO_INVALIDO, anyInt());
+        });
+    }
 
 }
