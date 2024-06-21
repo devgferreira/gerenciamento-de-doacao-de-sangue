@@ -96,5 +96,34 @@ public class DoadorServiceTest {
             _doadorService.criarDoador(DOADOR_REQUEST_DTO_COM_ENDERECO_INVALIDO);
         });
     }
+    @Test
+    void testAtualizarDoador_ComDoadorValido_RetornandoDoadorValido(){
+
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getNome()).filter(nome -> !nome.isEmpty()).ifPresent(DOADOR_VALIDO_2::setNome);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getEmail()).filter(email -> !email.isEmpty()).ifPresent(DOADOR_VALIDO_2::setEmail);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getAniversario()).ifPresent(DOADOR_VALIDO_2::setAniversario);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getPeso()).ifPresent(DOADOR_VALIDO_2::setPeso);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getGenero()).ifPresent(DOADOR_VALIDO_2::setGenero);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getTipoSanguineo()).filter(tipoSanguineo -> !tipoSanguineo.isEmpty()).ifPresent(DOADOR_VALIDO_2::setTipoSanguineo);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getEndereco().getBairro()).filter(bairro -> !bairro.isEmpty()).ifPresent(ENDERECO_DTO_VALIDO::setBairro);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getEndereco().getCidade()).filter(cidade -> !cidade.isEmpty()).ifPresent(ENDERECO_DTO_VALIDO::setCidade);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getEndereco().getEstado()).filter(estado -> !estado.isEmpty()).ifPresent(ENDERECO_DTO_VALIDO::setEstado);
+        Optional.ofNullable(DOADOR_REQUEST_DTO_VALIDO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(ENDERECO_DTO_VALIDO::setCep);
+
+
+        when(_doadorRepository.findById(anyInt())).thenReturn(Optional.of(DOADOR_VALIDO));
+        when(_enderecoService.buscarEnderecoComDoadorCpf(DOADOR_VALIDO.getCpf())).thenReturn(ENDERECO_DTO_VALIDO);
+
+
+
+        when(_doadorRepository.save(DOADOR_VALIDO)).thenReturn(DOADOR_VALIDO);
+        when(_enderecoService.atualizarEndereco(DOADOR_REQUEST_DTO_VALIDO.getEndereco(),
+                DOADOR_VALIDO.getCpf())).thenReturn(ENDERECO_DTO_VALIDO);
+        when(_modelMapper.map(DOADOR_REQUEST_DTO_VALIDO, DoadorResponseDTO.class)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+
+        DoadorResponseDTO result = _doadorService.atualizarDoador(DOADOR_REQUEST_DTO_VALIDO, anyInt());
+
+        assertNotNull(result);
+    }
 
 }
