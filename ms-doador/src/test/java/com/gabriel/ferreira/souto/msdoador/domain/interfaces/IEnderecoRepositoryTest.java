@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.Optional;
+
 @DataJpaTest
 class IEnderecoRepositoryTest {
     @Autowired
@@ -47,5 +49,15 @@ class IEnderecoRepositoryTest {
         assertEquals("PQE", result.getCidade());
         assertEquals("1231245", result.getCep());
         assertEquals("12312457891011", result.getDoadorCpf());
+    }
+    @Test
+    void testEndereco_QuandoDeletePorId_RetorandoEnderecoDeletado(){
+        _enderecoRepository.save(ENDERECO_VALIDO);
+        _enderecoRepository.deleteById(ENDERECO_VALIDO.getId());
+
+        Optional<Endereco> endereco = _enderecoRepository.findByDoadorCpf("82134196009");
+
+        assertTrue(endereco.isEmpty());
+
     }
 }
