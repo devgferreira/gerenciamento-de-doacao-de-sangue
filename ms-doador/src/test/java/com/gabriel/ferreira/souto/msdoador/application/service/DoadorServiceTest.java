@@ -172,4 +172,12 @@ public class DoadorServiceTest {
             _doadorService.buscarDoadorPorCpf(anyString());
         });
     }
+    @Test
+    void testDeletarDoadorComId_ComDoadorEncontrado_RetornadoDoadorDeletado(){
+        _enderecoService.deletarEnderecoComDoadorCpf(anyString());
+        _doadorRepository.delete(DOADOR_VALIDO);
+
+        verify(_doadorRepository).delete(DOADOR_VALIDO);
+    }
+
 }
