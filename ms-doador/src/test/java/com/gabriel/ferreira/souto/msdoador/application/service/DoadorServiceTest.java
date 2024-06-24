@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.net.http.WebSocketHandshakeException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -131,6 +132,21 @@ public class DoadorServiceTest {
         assertThrows(DoadorNaoEncontradoException.class, ()->{
             _doadorService.atualizarDoador(DOADOR_REQUEST_DTO_COM_ENDERECO_INVALIDO, anyInt());
         });
+    }
+    @Test
+    void testBuscarDoadorComId_ComDoadorEncontrado_RetornadoDoador(){
+
+        DOADOR_RESPONSE_DTO_VALIDO.setEndereco(ENDERECO_DTO_VALIDO);
+
+        when(_doadorRepository.findById(1)).thenReturn(Optional.of(DOADOR_VALIDO));
+        when(_enderecoService.buscarEnderecoComDoadorCpf(DOADOR_VALIDO.getCpf())).thenReturn(ENDERECO_DTO_VALIDO);
+        when(_modelMapper.map(DOADOR_VALIDO, DoadorResponseDTO.class)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+
+        DoadorResponseDTO result = _doadorService.buscarDoadorComId(1);
+
+        assertNotNull(result);
+        assertEquals(DOADOR_RESPONSE_DTO_VALIDO, result);
+
     }
 
 }
