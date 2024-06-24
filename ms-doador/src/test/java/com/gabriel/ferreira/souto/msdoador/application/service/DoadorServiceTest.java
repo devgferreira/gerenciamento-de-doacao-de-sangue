@@ -166,5 +166,10 @@ public class DoadorServiceTest {
         assertNotNull(result);
         assertEquals(DOADOR_RESPONSE_DTO_VALIDO, result);
     }
-
+    @Test
+    void testBuscarDoadorPorCpf_ComDoadorNaoEncontrado_RetornadoThrowDoadorNaoEncontradoException(){
+        assertThrows(DoadorNaoEncontradoException.class, ()->{
+            _doadorService.buscarDoadorPorCpf(anyString());
+        });
+    }
 }
