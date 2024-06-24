@@ -32,7 +32,7 @@ class EnderecoServiceTest {
     private ModelMapper _modelMapper;
 
     @Test
-    void testcriarEndereco_ComEnderecoValido_RetornadoEndereco(){
+    void testCriarEndereco_ComEnderecoValido_RetornadoEndereco(){
         ENDERECO_VALIDO.setDoadorCpf("123");
 
         when(_modelMapper.map(ENDERECO_DTO_VALIDO, Endereco.class)).thenReturn(ENDERECO_VALIDO);
@@ -46,7 +46,7 @@ class EnderecoServiceTest {
 
     }
     @Test
-    void testBuscarEndereco_ComDoadorCpf_ComEnderecoValido_RetornandoEndereco(){
+    void testBuscarEnderecoComDoadorCpf_ComEnderecoValido_RetornandoEndereco(){
         when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
         when(_modelMapper.map(ENDERECO_VALIDO, EnderecoDTO.class)).thenReturn(ENDERECO_DTO_VALIDO);
         EnderecoDTO result = _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
@@ -56,7 +56,7 @@ class EnderecoServiceTest {
 
     }
     @Test
-    void testBuscarEndereco_ComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
+    void testBuscarEnderecoComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
         assertThrows(EnderecoNaoEncontradoException.class, ()->{
             _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
         });
@@ -80,5 +80,11 @@ class EnderecoServiceTest {
         when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
         _enderecoService.deletarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
         verify(_enderecoRepository, times(1)).deleteById(ENDERECO_VALIDO.getId());
+    }
+    @Test
+    void testDeletarEnderecoComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
+        assertThrows(EnderecoNaoEncontradoException.class, ()->{
+            _enderecoService.deletarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
+        });
     }
 }
