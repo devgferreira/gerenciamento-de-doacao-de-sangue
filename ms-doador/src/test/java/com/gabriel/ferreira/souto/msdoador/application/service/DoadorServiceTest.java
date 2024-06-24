@@ -135,7 +135,6 @@ public class DoadorServiceTest {
     }
     @Test
     void testBuscarDoadorComId_ComDoadorEncontrado_RetornadoDoador(){
-
         DOADOR_RESPONSE_DTO_VALIDO.setEndereco(ENDERECO_DTO_VALIDO);
 
         when(_doadorRepository.findById(1)).thenReturn(Optional.of(DOADOR_VALIDO));
@@ -146,7 +145,13 @@ public class DoadorServiceTest {
 
         assertNotNull(result);
         assertEquals(DOADOR_RESPONSE_DTO_VALIDO, result);
+    }
 
+    @Test
+    void testBuscarDoadorComId_ComDoadorNaoEncontrado_RetornadoThrowDoadorNaoEncontradoException(){
+        assertThrows(DoadorNaoEncontradoException.class, ()->{
+            _doadorService.buscarDoadorComId(anyInt());
+        });
     }
 
 }
