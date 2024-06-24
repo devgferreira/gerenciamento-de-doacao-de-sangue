@@ -19,4 +19,12 @@ public class Endereco {
     private String cep;
     @JoinColumn(name = "doador_cpf")
     private String doadorCpf;
+
+    public Endereco(String bairro, String cidade, String estado, String cep, String doadorCpf) {
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.doadorCpf = doadorCpf;
+    }
 }
