@@ -20,4 +20,13 @@ class IEnderecoRepositoryTest {
         assertTrue(result.getId() > 0);
         assertEquals(ENDERECO_VALIDO, result);
     }
+    @Test
+    void testEndereco_QuandoBuscarEnderecoPorId_RetorandoEnderec(){
+        _enderecoRepository.save(ENDERECO_VALIDO);
+        Endereco result = _enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf()).get();
+
+        assertNotNull(result);
+        assertTrue(result.getId() > 0);
+        assertEquals(ENDERECO_VALIDO.getDoadorCpf(), result.getDoadorCpf());
+    }
 }
