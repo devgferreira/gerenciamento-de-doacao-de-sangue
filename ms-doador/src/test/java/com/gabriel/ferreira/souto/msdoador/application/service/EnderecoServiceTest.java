@@ -46,7 +46,7 @@ class EnderecoServiceTest {
 
     }
     @Test
-    void testBuscarEnderecoComDoadorCpf_ComEnderecoValido_RetornandoEndereco(){
+    void testBuscarEndereco_ComDoadorCpf_ComEnderecoValido_RetornandoEndereco(){
         when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
         when(_modelMapper.map(ENDERECO_VALIDO, EnderecoDTO.class)).thenReturn(ENDERECO_DTO_VALIDO);
         EnderecoDTO result = _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
@@ -56,10 +56,23 @@ class EnderecoServiceTest {
 
     }
     @Test
-    void testBuscarEnderecoComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
+    void testBuscarEndereco_ComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
         assertThrows(EnderecoNaoEncontradoException.class, ()->{
             _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
         });
+    }
+    @Test
+    void testAtualizarEndereco_ComEnderecoValido_RetornandoEnderecoAtualizado(){
+        when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
+        ENDERECO_VALIDO.setEstado("Alagoas");
+        ENDERECO_VALIDO.setCep("21231245");
+        ENDERECO_VALIDO.setCidade("PA");
+        ENDERECO_VALIDO.setBairro("Inter lagos");
+        when(_enderecoRepository.save(ENDERECO_VALIDO)).thenReturn(ENDERECO_VALIDO);
+        when(_modelMapper.map(ENDERECO_VALIDO, EnderecoDTO.class)).thenReturn(ENDERECO_DTO_VALIDO);
 
+        EnderecoDTO result = _enderecoService.atualizarEndereco(ENDERECO_DTO_VALIDO, ENDERECO_VALIDO.getDoadorCpf());
+        assertNotNull(result);
+        assertEquals(ENDERECO_DTO_VALIDO, result);
     }
 }
