@@ -3,6 +3,8 @@ package com.gabriel.ferreira.souto.msdoador.application.service;
 import com.gabriel.ferreira.souto.msdoador.application.dtos.EnderecoDTO;
 import com.gabriel.ferreira.souto.msdoador.domain.interfaces.IEnderecoRepository;
 import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EmailJaExisteException;
+import com.gabriel.ferreira.souto.msdoador.infra.exceptions.EnderecoNaoEncontradoException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import java.net.http.WebSocketHandshakeException;
 import java.util.Optional;
 
+import static com.gabriel.ferreira.souto.msdoador.common.DoadorConstants.DOADOR_REQUEST_DTO_VALIDO;
 import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 
 import static org.mockito.Mockito.*;
@@ -43,13 +46,20 @@ class EnderecoServiceTest {
 
     }
     @Test
-    void testBuscarEnderecoComDoadorCpf_ComEnderecoValido_RetornaandoEndereco(){
+    void testBuscarEnderecoComDoadorCpf_ComEnderecoValido_RetornandoEndereco(){
         when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
         when(_modelMapper.map(ENDERECO_VALIDO, EnderecoDTO.class)).thenReturn(ENDERECO_DTO_VALIDO);
         EnderecoDTO result = _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
 
         assertNotNull(result);
         assertEquals(ENDERECO_DTO_VALIDO, result);
+
+    }
+    @Test
+    void testBuscarEnderecoComDoadorCpf_ComDoadorCpfInvalido_RetornandoEnderecoNaoEncontradoException(){
+        assertThrows(EnderecoNaoEncontradoException.class, ()->{
+            _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
+        });
 
     }
 }
