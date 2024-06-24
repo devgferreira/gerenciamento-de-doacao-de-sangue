@@ -10,6 +10,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+
+import java.net.http.WebSocketHandshakeException;
+import java.util.Optional;
+
 import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 
 import static org.mockito.Mockito.*;
@@ -38,5 +42,14 @@ class EnderecoServiceTest {
         assertEquals(ENDERECO_DTO_VALIDO, result);
 
     }
+    @Test
+    void testBuscarEnderecoComDoadorCpf_ComEnderecoValido_RetornaandoEndereco(){
+        when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
+        when(_modelMapper.map(ENDERECO_VALIDO, EnderecoDTO.class)).thenReturn(ENDERECO_DTO_VALIDO);
+        EnderecoDTO result = _enderecoService.buscarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
 
+        assertNotNull(result);
+        assertEquals(ENDERECO_DTO_VALIDO, result);
+
+    }
 }
