@@ -75,4 +75,10 @@ class EnderecoServiceTest {
         assertNotNull(result);
         assertEquals(ENDERECO_DTO_VALIDO, result);
     }
+    @Test
+    void testDeletarEnderecoComDoadorCpf_ComEnderecoValido_RetornandoEnderecoDeletado(){
+        when(_enderecoRepository.findByDoadorCpf(ENDERECO_VALIDO.getDoadorCpf())).thenReturn(Optional.of(ENDERECO_VALIDO));
+        _enderecoService.deletarEnderecoComDoadorCpf(ENDERECO_VALIDO.getDoadorCpf());
+        verify(_enderecoRepository, times(1)).deleteById(ENDERECO_VALIDO.getId());
+    }
 }
