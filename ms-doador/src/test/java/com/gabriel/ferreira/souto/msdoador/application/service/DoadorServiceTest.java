@@ -153,5 +153,18 @@ public class DoadorServiceTest {
             _doadorService.buscarDoadorComId(anyInt());
         });
     }
+    @Test
+    void testBuscarDoadorPorCpf_ComDoadorEncontrado_RetornadoDoador(){
+        DOADOR_RESPONSE_DTO_VALIDO.setEndereco(ENDERECO_DTO_VALIDO);
+
+        when(_doadorRepository.findByCpf(anyString())).thenReturn(Optional.of(DOADOR_VALIDO));
+        when(_enderecoService.buscarEnderecoComDoadorCpf(DOADOR_VALIDO.getCpf())).thenReturn(ENDERECO_DTO_VALIDO);
+        when(_modelMapper.map(DOADOR_VALIDO, DoadorResponseDTO.class)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+
+        DoadorResponseDTO result = _doadorService.buscarDoadorPorCpf(anyString());
+
+        assertNotNull(result);
+        assertEquals(DOADOR_RESPONSE_DTO_VALIDO, result);
+    }
 
 }
