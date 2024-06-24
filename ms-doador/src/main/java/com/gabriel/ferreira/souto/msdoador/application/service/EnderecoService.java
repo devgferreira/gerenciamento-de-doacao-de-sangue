@@ -57,7 +57,7 @@ public class EnderecoService implements IEnderecoService {
         _enderecoRepository.deleteById(endereco.getId());
     }
 
-    public Endereco validarSeEnderecoExisteComDoadorCpf(String doadorCpf) {
+    private Endereco validarSeEnderecoExisteComDoadorCpf(String doadorCpf) {
         return _enderecoRepository.findByDoadorCpf(doadorCpf).orElseThrow(
                 () -> new EnderecoNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.ENDERECO_NAO_ENCONTRADO,

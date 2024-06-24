@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
@@ -174,10 +175,10 @@ public class DoadorServiceTest {
     }
     @Test
     void testDeletarDoadorComId_ComDoadorEncontrado_RetornadoDoadorDeletado(){
-        _enderecoService.deletarEnderecoComDoadorCpf(anyString());
-        _doadorRepository.delete(DOADOR_VALIDO);
-
-        verify(_doadorRepository).delete(DOADOR_VALIDO);
+        when(_doadorRepository.findById(1)).thenReturn(Optional.of(DOADOR_VALIDO));
+        _doadorService.deletarDoadorComId(1);
+        verify(_enderecoService, times(1)).deletarEnderecoComDoadorCpf(anyString());
+        verify(_doadorRepository, times(1)).delete(DOADOR_VALIDO);
     }
     @Test
     void testDeletarDoadorComId_ComDoadorNaoEncontrado_RetornadoThrowDoadorNaoEncontradoException(){
