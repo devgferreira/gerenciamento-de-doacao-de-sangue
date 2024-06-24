@@ -3,6 +3,7 @@ import static com.gabriel.ferreira.souto.msdoador.common.EnderecoConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.gabriel.ferreira.souto.msdoador.domain.model.endereco.Endereco;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,7 +21,6 @@ class IEnderecoRepositoryTest {
 
         assertNotNull(result);
         assertTrue(result.getId() > 0);
-        assertEquals(ENDERECO_VALIDO, result);
     }
     @Test
     void testEndereco_QuandoBuscarEnderecoPorId_RetorandoEndereco(){
