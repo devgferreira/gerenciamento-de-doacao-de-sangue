@@ -179,5 +179,10 @@ public class DoadorServiceTest {
 
         verify(_doadorRepository).delete(DOADOR_VALIDO);
     }
-
+    @Test
+    void testDeletarDoadorComId_ComDoadorNaoEncontrado_RetornadoThrowDoadorNaoEncontradoException(){
+        assertThrows(DoadorNaoEncontradoException.class, ()->{
+            _doadorService.deletarDoadorComId(anyInt());
+        });
+    }
 }
