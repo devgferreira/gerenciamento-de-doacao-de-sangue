@@ -43,8 +43,16 @@ class DoadorControllerTest {
     @Test
     void testBuscarDoadorComId_QuandoDoadorValido_RetornadoDoador(){
         int doadorId = 1;
-        when(_doadorService.buscarDoadorComId(1)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+        when(_doadorService.buscarDoadorComId(doadorId)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
         _mockMvc.perform(get("/api/doadores/id/{doadorId}", doadorId))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.cpf").value(DOADOR_RESPONSE_DTO_VALIDO.getCpf()));
+    }
+    @SneakyThrows
+    @Test
+    void testBuscarDoadorPorCpf_QuandoDoadorValido_RetornadoDoador(){
+        String cpf = "82116296072";
+        when(_doadorService.buscarDoadorPorCpf(cpf)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+        _mockMvc.perform(get("/api/doadores/cpf/{cpf}", cpf))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.cpf").value(DOADOR_RESPONSE_DTO_VALIDO.getCpf()));
     }
 
