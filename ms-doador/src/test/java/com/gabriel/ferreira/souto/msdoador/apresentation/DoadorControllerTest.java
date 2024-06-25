@@ -39,5 +39,13 @@ class DoadorControllerTest {
         _mockMvc.perform(post("/api/doadores").content(_objectMapper.writeValueAsString(DOADOR_REQUEST_DTO_VALIDO)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated()).andExpect(jsonPath("$.cpf").value(DOADOR_RESPONSE_DTO_VALIDO.getCpf()));
     }
+    @SneakyThrows
+    @Test
+    void testBuscarDoadorComId_QuandoDoadorValido_RetornadoDoador(){
+        int doadorId = 1;
+        when(_doadorService.buscarDoadorComId(1)).thenReturn(DOADOR_RESPONSE_DTO_VALIDO);
+        _mockMvc.perform(get("/api/doadores/id/{doadorId}", doadorId))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.cpf").value(DOADOR_RESPONSE_DTO_VALIDO.getCpf()));
+    }
 
 }
