@@ -31,6 +31,45 @@ public class DoadorService implements IDoadorService {
         _doadorRepository = doadorRepository;
     }
 
+    private static void validarDoador(DoadorRequestDTO doadorRequestDTO) {
+        boolean doadorInvalido = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
+                || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
+                || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
+        if (doadorInvalido) {
+            throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO, ErrorConstants.DOADOR_INVALIDO));
+        }
+        if (!validarCpf(doadorRequestDTO.getCpf())) {
+            throw new CpfInvalidoException(new ExceptionResponse(ErrorCodes.CPF_INVALIDO, ErrorConstants.CPF_INVALIDO));
+        }
+        validarEndereco(doadorRequestDTO.getEndereco());
+    }
+
+    private static void validarEndereco(EnderecoDTO endereco) {
+        if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
+                || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
+            throw new EnderecoInvalidoException(
+                    new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
+                            ErrorConstants.ENDERECO_INVALIDO));
+        }
+    }
+
+    private static void validarTipoSanguineo(String tipoSanguineo) {
+        tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
+        boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
+                || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
+                tipoSanguineo.equals("AB+") || tipoSanguineo.equals("AB-");
+        if (!tipoSanguineoValid) {
+            throw new TipoSanguineoInvalidoException(new ExceptionResponse(ErrorCodes.TIPO_SANGUINEO_INVALIDO,
+                    ErrorConstants.TIPO_SANGUINEO_INVALIDO));
+        }
+    }
+
+    private static boolean validarCpf(String cpf) {
+        CPFValidator validator = new CPFValidator();
+        validator.initialize(null);
+        return validator.isValid(cpf, null);
+    }
+
     @Override
     public DoadorResponseDTO criarDoador(DoadorRequestDTO doadorRequestDTO) {
         validarDoador(doadorRequestDTO);
@@ -101,50 +140,11 @@ public class DoadorService implements IDoadorService {
         _doadorRepository.delete(doador);
     }
 
-    private static void validarDoador(DoadorRequestDTO doadorRequestDTO) {
-        boolean doadorInvalido = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
-                || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
-                || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
-        if (doadorInvalido) {
-            throw new DoadorInvalidoException(new ExceptionResponse(ErrorCodes.DOADOR_INVALIDO, ErrorConstants.DOADOR_INVALIDO));
-        }
-        if (!validarCpf(doadorRequestDTO.getCpf())) {
-            throw new CpfInvalidoException(new ExceptionResponse(ErrorCodes.CPF_INVALIDO, ErrorConstants.CPF_INVALIDO));
-        }
-        validarEndereco(doadorRequestDTO.getEndereco());
-    }
-
-    private static void validarEndereco(EnderecoDTO endereco) {
-        if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
-                || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
-            throw new EnderecoInvalidoException(
-                    new ExceptionResponse(ErrorCodes.ENDERECO_INVALIDO,
-                            ErrorConstants.ENDERECO_INVALIDO));
-        }
-    }
-
-    private static void validarTipoSanguineo(String tipoSanguineo) {
-        tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
-        boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
-                || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
-                tipoSanguineo.equals("AB+") || tipoSanguineo.equals("AB-");
-        if (!tipoSanguineoValid) {
-            throw new TipoSanguineoInvalidoException(new ExceptionResponse(ErrorCodes.TIPO_SANGUINEO_INVALIDO,
-                    ErrorConstants.TIPO_SANGUINEO_INVALIDO));
-        }
-    }
-
     private Doador validarSeDoadorExisteComId(Integer doadorId) {
         return _doadorRepository.findById(doadorId).orElseThrow(
                 () -> new DoadorNaoEncontradoException(
                         new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
                                 ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
-    }
-
-    private  static boolean validarCpf(String cpf) {
-        CPFValidator validator = new CPFValidator();
-        validator.initialize(null);
-        return validator.isValid(cpf, null);
     }
 }
