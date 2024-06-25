@@ -19,14 +19,4 @@ public class DoadorRequestDTO {
     private Integer peso;
     private String tipoSanguineo;
     private EnderecoDTO endereco;
-
-    public DoadorRequestDTO(String cpf, String nome, String email, Date aniversario, Genero genero, Integer peso, String tipoSanguineo) {
-        this.cpf = cpf;
-        this.nome = nome;
-        this.email = email;
-        this.aniversario = aniversario;
-        this.genero = genero;
-        this.peso = peso;
-        this.tipoSanguineo = tipoSanguineo;
-    }
 }
