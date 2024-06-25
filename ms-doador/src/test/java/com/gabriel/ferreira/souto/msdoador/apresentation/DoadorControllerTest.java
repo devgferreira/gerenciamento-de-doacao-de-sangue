@@ -64,5 +64,14 @@ class DoadorControllerTest {
         _mockMvc.perform(put("/api/doadores/{doadorId}", doadorId).content(_objectMapper.writeValueAsString(DOADOR_REQUEST_DTO_VALIDO)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.cpf").value(DOADOR_RESPONSE_DTO_VALIDO.getCpf()));
     }
+    @SneakyThrows
+    @Test
+    void testDeletarDoador_QuandoDoadorValido_RetornadoDoadorDeletado(){
+        int doadorId = 1;
+       _doadorService.deletarDoadorComId(doadorId);
+
+        _mockMvc.perform(delete("/api/doadores/{doadorId}", doadorId))
+                .andExpect(status().isOk()).andExpect(jsonPath("$").value("Doador Deletado com Sucesso"));
+    }
 
 }
