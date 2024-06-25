@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface IEnderecoRepository extends JpaRepository<Endereco, Integer> {
-    Optional<Endereco> findByDoadorId(Integer doadorId);
+    Optional<Endereco> findByDoadorCpf(String doadorCpf);
 }

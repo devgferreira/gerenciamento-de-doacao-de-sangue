@@ -47,19 +47,14 @@ public class DoadorService implements IDoadorService {
         }
         Doador doador = _modelMapper.map(doadorRequestDTO, Doador.class);
         _doadorRepository.save(doador);
-        Doador result = _doadorRepository.findByEmail(doador.getEmail()).orElseThrow(
-                () -> new DoadorNaoEncontradoException(
-                        new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
-                                ErrorConstants.DOADOR_NAO_ENCONTRADO))
-        );
-        _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), result.getId());
+        _enderecoService.criarEndereco(doadorRequestDTO.getEndereco(), doadorRequestDTO.getCpf());
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
 
     @Override
     public DoadorResponseDTO atualizarDoador(DoadorRequestDTO doadorRequestDTO, Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
 
         Optional.ofNullable(doadorRequestDTO.getNome()).filter(nome -> !nome.isEmpty()).ifPresent(doador::setNome);
         Optional.ofNullable(doadorRequestDTO.getEmail()).filter(email -> !email.isEmpty()).ifPresent(doador::setEmail);
@@ -73,7 +68,7 @@ public class DoadorService implements IDoadorService {
         Optional.ofNullable(doadorRequestDTO.getEndereco().getCep()).filter(cep -> !cep.isEmpty()).ifPresent(enderecoDTO::setCep);
 
         _doadorRepository.save(doador);
-        _enderecoService.atualizarEndereco(enderecoDTO, doadorId);
+        _enderecoService.atualizarEndereco(enderecoDTO, doador.getCpf());
 
         return _modelMapper.map(doadorRequestDTO, DoadorResponseDTO.class);
     }
@@ -81,7 +76,7 @@ public class DoadorService implements IDoadorService {
     @Override
     public DoadorResponseDTO buscarDoadorComId(Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doadorId);
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
@@ -93,7 +88,7 @@ public class DoadorService implements IDoadorService {
                 () -> new DoadorNaoEncontradoException(new ExceptionResponse(ErrorCodes.DOADOR_NAO_ENCONTRADO,
                         ErrorConstants.DOADOR_NAO_ENCONTRADO))
         );
-        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorId(doador.getId());
+        EnderecoDTO enderecoDTO = _enderecoService.buscarEnderecoComDoadorCpf(doador.getCpf());
         DoadorResponseDTO doadorResponseDTO = _modelMapper.map(doador, DoadorResponseDTO.class);
         doadorResponseDTO.setEndereco(enderecoDTO);
         return doadorResponseDTO;
@@ -102,11 +97,11 @@ public class DoadorService implements IDoadorService {
     @Override
     public void deletarDoadorComId(Integer doadorId) {
         Doador doador = validarSeDoadorExisteComId(doadorId);
-        _enderecoService.deletarEnderecoComDoadorId(doadorId);
+        _enderecoService.deletarEnderecoComDoadorCpf(doador.getCpf());
         _doadorRepository.delete(doador);
     }
 
-    private void validarDoador(DoadorRequestDTO doadorRequestDTO) {
+    private static void validarDoador(DoadorRequestDTO doadorRequestDTO) {
         boolean doadorInvalido = doadorRequestDTO.getNome().isEmpty() || doadorRequestDTO.getEmail().isEmpty()
                 || doadorRequestDTO.getAniversario() == null || doadorRequestDTO.getPeso() == null
                 || doadorRequestDTO.getGenero() == null || doadorRequestDTO.getTipoSanguineo().isEmpty();
@@ -119,7 +114,7 @@ public class DoadorService implements IDoadorService {
         validarEndereco(doadorRequestDTO.getEndereco());
     }
 
-    private void validarEndereco(EnderecoDTO endereco) {
+    private static void validarEndereco(EnderecoDTO endereco) {
         if (endereco.getEstado().isEmpty() || endereco.getCep().isEmpty()
                 || endereco.getBairro().isEmpty() || endereco.getCidade().isEmpty()) {
             throw new EnderecoInvalidoException(
@@ -128,7 +123,7 @@ public class DoadorService implements IDoadorService {
         }
     }
 
-    private void validarTipoSanguineo(String tipoSanguineo) {
+    private static void validarTipoSanguineo(String tipoSanguineo) {
         tipoSanguineo = tipoSanguineo.substring(0, 1).toUpperCase() + tipoSanguineo.substring(1);
         boolean tipoSanguineoValid = tipoSanguineo.equals("B+") || tipoSanguineo.equals("B-") || tipoSanguineo.equals("A+")
                 || tipoSanguineo.equals("A-") || tipoSanguineo.equals("O+") || tipoSanguineo.equals("O-") ||
@@ -147,7 +142,7 @@ public class DoadorService implements IDoadorService {
         );
     }
 
-    public boolean validarCpf(String cpf) {
+    private  static boolean validarCpf(String cpf) {
         CPFValidator validator = new CPFValidator();
         validator.initialize(null);
         return validator.isValid(cpf, null);

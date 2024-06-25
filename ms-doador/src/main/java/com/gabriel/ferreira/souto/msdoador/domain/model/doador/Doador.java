@@ -24,4 +24,14 @@ public class Doador {
     private Genero genero;
     private Integer peso;
     private String tipoSanguineo;
+
+    public Doador(String cpf, String nome, String email, Date aniversario, Genero genero, Integer peso, String tipoSanguineo) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.aniversario = aniversario;
+        this.genero = genero;
+        this.peso = peso;
+        this.tipoSanguineo = tipoSanguineo;
+    }
 }
