@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.OK)
 public class TipoSanguineoInvalidoException extends RuntimeException {
-    private ExceptionResponse exceptionResponse;
+    private final ExceptionResponse exceptionResponse;
 
     public TipoSanguineoInvalidoException(ExceptionResponse exceptionResponse) {
         super();

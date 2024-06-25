@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.OK)
 public class CpfInvalidoException extends RuntimeException {
-    private ExceptionResponse exceptionResponse;
+    private final ExceptionResponse exceptionResponse;
 
     public CpfInvalidoException(ExceptionResponse exceptionResponse) {
         super();

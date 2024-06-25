@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.OK)
 public class EnderecoInvalidoException extends RuntimeException {
-    private ExceptionResponse exceptionResponse;
+    private final ExceptionResponse exceptionResponse;
 
     public EnderecoInvalidoException(ExceptionResponse exceptionResponse) {
         super();
